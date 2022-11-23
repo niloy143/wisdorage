@@ -6,8 +6,10 @@ import NavigationBar from '../components/NavigationBar';
 const MainLayout = () => {
     return (
         <div>
-            <NavigationBar />
-            <Outlet />
+            <div className='max-w-7xl mx-auto'>
+                <NavigationBar />
+                <Outlet />
+            </div>
             <Footer />
         </div>
     );
