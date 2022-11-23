@@ -1,15 +1,21 @@
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { WisdorageContext } from '../ContextProvider/ContextProvider';
+import Loader from './Loader';
 
 const NavigationBar = () => {
-    const { user } = useContext(WisdorageContext);
+    const { user, userLoading } = useContext(WisdorageContext);
 
     const navItems = <>
         <li><NavLink to="/home" className={`rounded-md`}>Home</NavLink></li>
         <li><NavLink to="/blog" className={`rounded-md`}>Blog</NavLink></li>
         <li><NavLink to="/about" className={`rounded-md`}>About</NavLink></li>
         <li><NavLink to="/contact" className={`rounded-md`}>Contact</NavLink></li>
+        {
+            user && <>
+                <li><NavLink to="/dashboard" className={`rounded-md`}>Dashboard</NavLink></li>
+            </>
+        }
     </>
     return (
         <div className="navbar bg-base-100">
@@ -31,7 +37,7 @@ const NavigationBar = () => {
             </div>
             <div className="navbar-end">
                 {
-                    user ? <div className="dropdown">
+                    userLoading ? <Loader /> : user ? <div className="dropdown">
                         <label tabIndex={0}>
                             <div className="avatar transition active:scale-95 cursor-pointer">
                                 <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
@@ -44,7 +50,7 @@ const NavigationBar = () => {
                                 <li><button className='btn btn-primary rounded-md text-white'>Log Out</button></li>
                             </ul>
                         </div>
-                    </div> : <button className='btn btn-primary'>Log In</button>
+                    </div> : <NavLink to="/login" className='btn btn-primary'>Log In</NavLink>
                 }
             </div>
         </div>
