@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import GoogleSignIn from '../../components/GoogleSignIn';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, NavLink, useLocation } from 'react-router-dom';
 import { WisdorageContext } from '../../ContextProvider/ContextProvider';
 import Loader from '../../components/Loader';
 
@@ -23,6 +23,7 @@ const Login = () => {
                             <input type="password" placeholder="Enter password" className="input input-bordered w-full" />
                         </div>
                         <button className='btn btn-primary mt-5 btn-block'>Log In</button>
+                        <p className='text-center my-2'>Don't have any account? <NavLink className='text-blue-600 hover:text-black' to="/register" state={state}>Register</NavLink>.</p>
                     </form>
                     <div className="divider my-7 text-xl font-semibold">OR</div>
                     <GoogleSignIn googleSignIn={googleSignIn} />

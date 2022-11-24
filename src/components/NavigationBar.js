@@ -55,7 +55,7 @@ const NavigationBar = () => {
                                 <h4 className='text-sm'>{user?.email}</h4>
                             </div>
                             <div className='divider'></div>
-                            <ul className='menu gap-1'>
+                            <ul className='menu gap-1 whitespace-nowrap'>
                                 <li><button className='btn btn-ghost btn-block rounded-md'>Update Profile</button></li>
                                 <li><button className='btn btn-primary rounded-md text-white' onClick={() => {
                                     logOut().then(() => setUserPhoto(null)).catch(err => console.error(err.code))
