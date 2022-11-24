@@ -24,7 +24,7 @@ const NavigationBar = () => {
         <div className="navbar bg-base-100">
             <div className="navbar-start">
                 <div className="dropdown">
-                    <label tabIndex={0} className="btn btn-ghost lg:hidden">
+                    <label tabIndex={0} className="btn btn-primary mr-1 lg:hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
                     </label>
                     <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow gap-1 bg-base-100 rounded-box w-52">
@@ -48,7 +48,7 @@ const NavigationBar = () => {
                                 </div>
                             </div>
                         </label>
-                        <div tabIndex={0} className="dropdown-content p-5 shadow rounded-box">
+                        <div tabIndex={0} className="dropdown-content bg-base-100 p-5 shadow rounded-box">
                             <div className='flex flex-col items-center mb-5'>
                                 <img className='w-24 h-24 rounded-full' src={userPhoto || "https://i.ibb.co/B4gCmt8/avatar-icon-free-26.jpg"} alt="" />
                                 <h3 className='text-xl font-semibold mt-2'>{user?.displayName}</h3>

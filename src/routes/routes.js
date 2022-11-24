@@ -5,6 +5,10 @@ import Blog from "../pages/Blog/Blog";
 import NotFound from "../pages/NotFound/NotFound";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
+import DashboardLayout from "../layouts/DashboardLayout";
+import AllSeller from "../pages/Dashboard/AllSeller";
+import PrivateRoute from "./PrivateRoute";
+import AdminRoute from "./AdminRoute";
 
 const routes = createBrowserRouter([
     {
@@ -31,6 +35,16 @@ const routes = createBrowserRouter([
                 path: '/register',
                 element: <Register />
             },
+            {
+                path: '/dashboard',
+                element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+                children: [
+                    {
+                        path: '/dashboard/all-seller',
+                        element: <AdminRoute><AllSeller /></AdminRoute>
+                    }
+                ]
+            }
         ]
     },
     {
