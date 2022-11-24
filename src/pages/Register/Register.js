@@ -38,8 +38,13 @@ const Register = () => {
                             .finally(() => {
                                 const { uid, displayName, email, photoURL } = user;
                                 axios.post('http://localhost:1234/users', { uid, displayName, email, photoURL, role });
-                                setSubmitting(false);
-                                setUpdatingUser(false);
+                                axios.get(`http://localhost:1234/jwt?email=${email}`)
+                                    .then(({ data: { token } }) => localStorage.setItem('wisdorage-token', token))
+                                    .catch(err => console.error(err))
+                                    .finally(() => {
+                                        setSubmitting(false);
+                                        setUpdatingUser(false);
+                                    })
                             })
                     })
                     .catch(err => {

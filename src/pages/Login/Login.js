@@ -4,6 +4,7 @@ import { Navigate, NavLink, useLocation } from 'react-router-dom';
 import { WisdorageContext } from '../../ContextProvider/ContextProvider';
 import Loader from '../../components/Loader';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
 
 const Login = () => {
     const { user, userLoading, googleSignIn, login } = useContext(WisdorageContext);
@@ -14,7 +15,12 @@ const Login = () => {
     const loginHandler = ({ email, password }) => {
         setLogging(true);
         login(email, password)
-            .then(() => setLogging(false))
+            .then(({ user: { email } }) => {
+                axios.get(`http://localhost:1234/jwt?email=${email}`)
+                    .then(({ data: { token } }) => localStorage.setItem('wisdorage-token', token))
+                    .catch(err => console.error(err))
+                    .finally(() => setLogging(false))
+            })
             .catch(err => {
                 switch (err.code) {
                     case 'auth/user-not-found':

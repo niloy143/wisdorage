@@ -25,7 +25,7 @@ const ContextProvider = ({ children }) => {
     const googleSignIn = () => signInWithPopup(auth, googleProvider);
     const createUser = (email, password) => createUserWithEmailAndPassword(auth, email, password);
     const updateUser = (name, photo) => updateProfile(auth.currentUser, { displayName: name, photoURL: photo });
-    const logOut = () => signOut(auth);
+    const logOut = () => signOut(auth).then(() => localStorage.removeItem('wisdorage-token'));
 
     const contexts = {
         user,
