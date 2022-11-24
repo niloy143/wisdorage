@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import Loader from '../components/Loader';
@@ -8,7 +9,13 @@ const GoogleSignIn = ({ googleSignIn }) => {
     const handleGoogleSignIn = () => {
         setSigning(true);
         googleSignIn()
-            .then(() => { })
+            .then(result => {
+                const { uid, displayName, email, photoURL } = result.user;
+                axios.post('http://localhost:1234/users', {
+                    uid, displayName, email, photoURL,
+                    role: 'buyer'
+                })
+            })
             .catch(err => console.error(err))
             .finally(() => setSigning(false))
     }
