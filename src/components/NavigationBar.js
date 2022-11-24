@@ -1,10 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { WisdorageContext } from '../ContextProvider/ContextProvider';
+import useValidImg from '../hooks/useValidImg';
 import Loader from './Loader';
 
 const NavigationBar = () => {
-    const { user, userLoading } = useContext(WisdorageContext);
+    const { user, userLoading, logOut } = useContext(WisdorageContext);
+    const [userPhoto, setUserPhoto] = useState(null);
+    useValidImg(user?.photoURL, setUserPhoto);
 
     const navItems = <>
         <li><NavLink to="/home" className={`rounded-md`}>Home</NavLink></li>
@@ -41,13 +44,22 @@ const NavigationBar = () => {
                         <label tabIndex={0}>
                             <div className="avatar transition active:scale-95 cursor-pointer">
                                 <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                    <img src={undefined || "https://i.ibb.co/B4gCmt8/avatar-icon-free-26.jpg"} alt="" />
+                                    <img src={userPhoto || "https://i.ibb.co/B4gCmt8/avatar-icon-free-26.jpg"} alt="" />
                                 </div>
                             </div>
                         </label>
-                        <div tabIndex={0} className="dropdown-content p-2 shadow rounded-box w-52">
-                            <ul className='menu'>
-                                <li><button className='btn btn-primary rounded-md text-white'>Log Out</button></li>
+                        <div tabIndex={0} className="dropdown-content p-5 shadow rounded-box">
+                            <div className='flex flex-col items-center mb-5'>
+                                <img className='w-24 h-24 rounded-full' src={userPhoto || "https://i.ibb.co/B4gCmt8/avatar-icon-free-26.jpg"} alt="" />
+                                <h3 className='text-xl font-semibold mt-2'>{user?.displayName}</h3>
+                                <h4 className='text-sm'>{user?.email}</h4>
+                            </div>
+                            <div className='divider'></div>
+                            <ul className='menu gap-1'>
+                                <li><button className='btn btn-ghost btn-block rounded-md'>Update Profile</button></li>
+                                <li><button className='btn btn-primary rounded-md text-white' onClick={() => {
+                                    logOut().then(() => setUserPhoto(null)).catch(err => console.error(err.code))
+                                }}>Log Out</button></li>
                             </ul>
                         </div>
                     </div> : <NavLink to="/login" className='btn btn-primary'>Log In</NavLink>
