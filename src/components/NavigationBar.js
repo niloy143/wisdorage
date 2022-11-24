@@ -5,7 +5,7 @@ import useValidImg from '../hooks/useValidImg';
 import Loader from './Loader';
 
 const NavigationBar = () => {
-    const { user, userLoading, logOut } = useContext(WisdorageContext);
+    const { user, userLoading, logOut, updatingUser } = useContext(WisdorageContext);
     const [userPhoto, setUserPhoto] = useState(null);
     useValidImg(user?.photoURL, setUserPhoto);
 
@@ -40,7 +40,7 @@ const NavigationBar = () => {
             </div>
             <div className="navbar-end">
                 {
-                    userLoading ? <Loader /> : user ? <div className="dropdown">
+                    userLoading ? <Loader /> : user && !updatingUser ? <div className="dropdown">
                         <label tabIndex={0}>
                             <div className="avatar transition active:scale-95 cursor-pointer">
                                 <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">

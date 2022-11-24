@@ -8,13 +8,13 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 
 const Register = () => {
-    const { user, userLoading, googleSignIn, createUser, updateUser } = useContext(WisdorageContext);
+    const { user, userLoading, googleSignIn, createUser, updateUser, setUpdatingUser } = useContext(WisdorageContext);
     const { state } = useLocation();
     const [imgFile, setImgFile] = useState(null);
     const [photoURL, setPhotoURL] = useState(null);
     const [role, setRole] = useState('buyer');
     useImage(imgFile, setPhotoURL);
-    const { register, handleSubmit, formState: { errors }, watch } = useForm();
+    const { register, handleSubmit, formState: { errors }, watch, setError } = useForm();
     const [submitting, setSubmitting] = useState(false);
 
     const submissionHandler = ({ name, email, password, photo }) => {
@@ -31,6 +31,7 @@ const Register = () => {
             .then(({ data: { url: imgURL } }) => {
                 createUser(email, password)
                     .then(({ user }) => {
+                        setUpdatingUser(true);
                         updateUser(name, imgURL)
                             .then(() => { })
                             .catch(err => console.error(err.code))
@@ -38,9 +39,16 @@ const Register = () => {
                                 const { uid, displayName, email, photoURL } = user;
                                 axios.post('http://localhost:1234/users', { uid, displayName, email, photoURL, role });
                                 setSubmitting(false);
+                                setUpdatingUser(false);
                             })
                     })
                     .catch(err => {
+                        if (err.code === 'auth/email-already-exists' || err.code === 'auth/email-already-in-use') {
+                            setError('email', {
+                                type: 'authentication',
+                                message: 'Someone has already signed in with this email address'
+                            })
+                        }
                         console.error(err.code);
                         setSubmitting(false);
                     })
