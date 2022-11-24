@@ -3,11 +3,11 @@ import React, { useContext } from 'react';
 import { WisdorageContext } from '../../ContextProvider/ContextProvider';
 import Loader from '../../components/Loader';
 
-const AllSeller = () => {
+const AllBuyer = () => {
     const { user } = useContext(WisdorageContext);
-    const { data: sellers, isLoading } = useQuery({
-        queryKey: ['sellers', user?.email],
-        queryFn: () => fetch(`http://localhost:1234/sellers?email=${user?.email}`, {
+    const { data: buyers, isLoading } = useQuery({
+        queryKey: ['buyers', user?.email],
+        queryFn: () => fetch(`http://localhost:1234/buyers?email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
             }
@@ -16,22 +16,21 @@ const AllSeller = () => {
 
     return (
         <div>
-            <h2 className='text-3xl py-6 font-semibold text-center'>All Seller List</h2>
+            <h2 className='text-3xl py-6 font-semibold text-center'>All Buyer List</h2>
             <div className='w-11/12 mx-auto'>
                 {
                     isLoading ? <Loader section /> : <div className="overflow-x-auto w-full">
                         <table className="table w-full">
                             <thead>
                                 <tr>
-                                    <th>Seller</th>
+                                    <th>Buyer</th>
                                     <th>Email</th>
-                                    <th>Verify</th>
                                     <th>Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
-                                    sellers.map(({ _id, displayName, email, photoURL, role, verified }) => <tr key={_id}>
+                                    buyers.map(({ _id, displayName, email, photoURL, role }) => <tr key={_id}>
 
                                         <td>
                                             <div className="flex items-center space-x-3">
@@ -48,11 +47,6 @@ const AllSeller = () => {
                                         </td>
                                         <td> {email} </td>
                                         <td>
-                                            {
-                                                verified ? <i>Verified</i> : <button className='btn btn-sm bg-blue-500 border-0 text-white'>Verify</button>
-                                            }
-                                        </td>
-                                        <td>
                                             <button className='btn btn-sm btn-error'>Delete</button>
                                         </td>
                                     </tr>)
@@ -66,4 +60,4 @@ const AllSeller = () => {
     );
 };
 
-export default AllSeller;
+export default AllBuyer;

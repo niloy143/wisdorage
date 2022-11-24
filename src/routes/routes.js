@@ -9,6 +9,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import AllSeller from "../pages/Dashboard/AllSeller";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
+import AllBuyer from "../pages/Dashboard/AllBuyer";
 
 const routes = createBrowserRouter([
     {
@@ -42,7 +43,11 @@ const routes = createBrowserRouter([
                     {
                         path: '/dashboard/all-seller',
                         element: <AdminRoute><AllSeller /></AdminRoute>
-                    }
+                    },
+                    {
+                        path: '/dashboard/all-buyer',
+                        element: <AdminRoute><AllBuyer /></AdminRoute>
+                    },
                 ]
             }
         ]

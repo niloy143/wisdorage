@@ -8,7 +8,7 @@ const BuyerRoute = ({ children }) => {
     const { user } = useContext(WisdorageContext);
     const [role, loading] = useRoleCheck(user?.email);
 
-    return loading ? <Loader /> : role === 'buyer' ? children : <Navigate to="/" />
+    return loading ? <Loader body /> : role === 'buyer' ? children : <Navigate to="/" />
 };
 
 export default BuyerRoute;

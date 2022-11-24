@@ -8,7 +8,7 @@ const AdminRoute = ({ children }) => {
     const { user } = useContext(WisdorageContext);
     const [role, loading] = useRoleCheck(user?.email);
 
-    return loading ? <Loader /> : role === 'admin' ? children : <Navigate to="/" />
+    return loading ? <Loader body /> : role === 'admin' ? children : <Navigate to="/" />
 };
 
 export default AdminRoute;
