@@ -7,7 +7,7 @@ const AllSeller = () => {
     const { user } = useContext(WisdorageContext);
     const { data: sellers, isLoading } = useQuery({
         queryKey: ['sellers', user?.email],
-        queryFn: () => fetch(`http://localhost:1234/sellers?email=${user?.email}`, {
+        queryFn: () => fetch(`https://wisdorage-server.vercel.app/sellers?email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
             }
