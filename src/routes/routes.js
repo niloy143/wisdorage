@@ -10,6 +10,7 @@ import AllSeller from "../pages/Dashboard/AllSeller";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import AllBuyer from "../pages/Dashboard/AllBuyer";
+import BookCategories from "../pages/Home/BookCategories";
 
 const routes = createBrowserRouter([
     {
@@ -23,6 +24,10 @@ const routes = createBrowserRouter([
             {
                 path: '/home',
                 element: <Home />
+            },
+            {
+                path: '/categories',
+                element: <BookCategories page />
             },
             {
                 path: '/blog',
