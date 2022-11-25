@@ -11,6 +11,7 @@ const Login = () => {
     const { state } = useLocation();
     const { register, handleSubmit, formState: { errors }, setError } = useForm();
     const [logging, setLogging] = useState(false);
+    const [googleSigning, setGoogleSigning] = useState(false);
 
     const loginHandler = ({ email, password }) => {
         setLogging(true);
@@ -45,7 +46,7 @@ const Login = () => {
     }
 
     return (
-        userLoading ? <Loader body /> : user && !logging ? <Navigate to={state || '/'} /> :
+        userLoading ? <Loader body /> : user && !logging && !googleSigning ? <Navigate to={state || '/'} /> :
             <div className='px-3 py-24'>
                 <div className='max-w-xl px-5 py-12 mx-auto border rounded-xl shadow-xl'>
                     <h2 className='text-2xl font-semibold text-center mb-5'>Log In</h2>
@@ -77,7 +78,7 @@ const Login = () => {
                         <p className='text-center my-2'>Don't have any account? <NavLink className='text-blue-600 hover:text-black' to="/register" state={state}>Register</NavLink>.</p>
                     </form>
                     <div className="divider my-7 text-xl font-semibold">OR</div>
-                    <GoogleSignIn googleSignIn={googleSignIn} />
+                    <GoogleSignIn googleSignIn={googleSignIn} googleSigning={googleSigning} setGoogleSigning={setGoogleSigning} />
                 </div>
             </div>
     );

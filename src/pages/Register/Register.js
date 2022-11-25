@@ -16,6 +16,7 @@ const Register = () => {
     useImage(imgFile, setPhotoURL);
     const { register, handleSubmit, formState: { errors }, watch, setError } = useForm();
     const [submitting, setSubmitting] = useState(false);
+    const [googleSigning, setGoogleSigning] = useState(false);
 
     const submissionHandler = ({ name, email, password, photo }) => {
 
@@ -65,7 +66,7 @@ const Register = () => {
     }
 
     return (
-        userLoading ? <Loader body /> : user && !submitting ? <Navigate to={state || '/'} /> :
+        userLoading ? <Loader body /> : user && !submitting && !googleSigning ? <Navigate to={state || '/'} /> :
             <div className='px-3 py-24'>
                 <div className='max-w-xl px-5 py-12 mx-auto border rounded-xl shadow-xl'>
                     <div className="avatar flex justify-center">
@@ -149,7 +150,7 @@ const Register = () => {
                         <p className='text-center my-2'>Already have an account? <NavLink className='text-blue-600 hover:text-black' to="/login" state={state}>Log In</NavLink>.</p>
                     </form>
                     <div className="divider my-7 text-xl font-semibold">OR</div>
-                    <GoogleSignIn googleSignIn={googleSignIn} />
+                    <GoogleSignIn googleSignIn={googleSignIn} googleSigning={googleSigning} setGoogleSigning={setGoogleSigning} />
                 </div>
             </div>
     );

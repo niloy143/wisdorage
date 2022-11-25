@@ -1,13 +1,12 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import Loader from '../components/Loader';
 
-const GoogleSignIn = ({ googleSignIn }) => {
-    const [signing, setSigning] = useState(false);
+const GoogleSignIn = ({ googleSignIn, googleSigning, setGoogleSigning }) => {
 
     const handleGoogleSignIn = () => {
-        setSigning(true);
+        setGoogleSigning(true);
         googleSignIn()
             .then(result => {
                 const { uid, displayName, email, photoURL } = result.user;
@@ -18,18 +17,18 @@ const GoogleSignIn = ({ googleSignIn }) => {
                 axios.get(`http://localhost:1234/jwt?email=${email}`)
                     .then(({ data: { token } }) => localStorage.setItem('wisdorage-token', token))
                     .catch(err => console.error(err))
+                    .finally(() => setGoogleSigning(false))
             })
-            .catch(err => console.error(err))
-            .finally(() => setSigning(false))
+            .catch(() => setGoogleSigning(false))
     }
 
     return (
-        <button className={`flex justify-center items-center gap-2 border rounded-lg px-5 py-3 w-full ${signing ? 'cursor-not-allowed bg-gray-200' : 'active:scale-95 transition border-gray-300 cursor-pointer hover:bg-gray-200'} select-none`}
-            disabled={signing}
+        <button className={`flex justify-center items-center gap-2 border rounded-lg px-5 py-3 w-full ${googleSigning ? 'cursor-not-allowed bg-gray-200' : 'active:scale-95 transition border-gray-300 cursor-pointer hover:bg-gray-200'} select-none`}
+            disabled={googleSigning}
             onClick={handleGoogleSignIn}
         >
             {
-                signing ? <Loader /> : <>
+                googleSigning ? <Loader /> : <>
                     <FcGoogle className='text-2xl' />
                     <span className='text-xl font-semibold'>CONTINUE WITH GOOGLE</span>
                 </>
