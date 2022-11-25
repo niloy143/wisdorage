@@ -11,6 +11,7 @@ import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import AllBuyer from "../pages/Dashboard/AllBuyer";
 import BookCategories from "../pages/Home/BookCategories";
+import BooksByCategory from "../pages/BooksByCategory/BooksByCategory";
 
 const routes = createBrowserRouter([
     {
@@ -27,7 +28,12 @@ const routes = createBrowserRouter([
             },
             {
                 path: '/categories',
-                element: <BookCategories page />
+                element: <BookCategories />
+            },
+            {
+                path: '/books/:categoryId',
+                element: <PrivateRoute><BooksByCategory /></PrivateRoute>,
+                loader: ({ params: { categoryId } }) => categoryId
             },
             {
                 path: '/blog',
