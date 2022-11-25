@@ -1,16 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { MdVerifiedUser } from 'react-icons/md';
 import { useLoaderData } from 'react-router-dom';
 import Loader from '../../components/Loader';
 import { WisdorageContext } from '../../ContextProvider/ContextProvider';
+import OrderNowModal from './OrderNowModal';
+import { Toaster, toast } from 'react-hot-toast';
 
 const BooksByCategory = () => {
     const categoryId = useLoaderData();
     const { user } = useContext(WisdorageContext);
+    const [orderModal, setOrderModal] = useState(null);
+    const [cancelling, setCancelling] = useState(false);
 
-    const { data: books, isLoading } = useQuery({
+    const { data: books, isLoading, refetch } = useQuery({
         queryKey: [categoryId],
         queryFn: () => fetch(`http://localhost:1234/books/${categoryId}?email=${user?.email}`, {
             headers: {
@@ -19,13 +23,34 @@ const BooksByCategory = () => {
         }).then(res => res.json())
     })
 
+    const cancelOrder = id => {
+        fetch(`http://localhost:1234/order/${id}?email=${user.email}`, {
+            method: "DELETE",
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
+            }
+        })
+            .then(res => res.json())
+            .then(({ deletedCount }) => {
+                if (deletedCount > 0) {
+                    toast.success('Order cancelled successfully');
+                    refetch();
+                }
+                else {
+                    toast.error('Something Went Wrong!')
+                }
+            })
+            .catch(() => toast.error('Something Went Wrong!'))
+            .finally(() => setCancelling(false))
+    }
+
     return (
         isLoading ? <Loader body /> : !books?.length ? <div className='h-[80vh] flex items-center justify-center text-3xl text-gray-400 font-semibold'> Nothing to show!</div> :
             <div className='my-12'>
                 <h2 className='text-5xl font-bold mb-5'>{categoryId.split('-').map(w => w.split('')[0].toUpperCase() + w.slice(1, w.length)).join(' ')}</h2>
                 <div className='mx-3 grid sm:grid-cols-2 xl:grid-cols-3 gap-5'>
                     {
-                        books.filter(({ available }) => !!available).map(({ _id, picture, title, writer, location, resalePrice, originalPrice, yearsOfUse, postedIn, seller, verifiedSeller }) => <div key={_id} className="relative pb-16 p-3 border rounded-xl shadow-lg m-1">
+                        books.filter(({ available }) => !!available).map(({ _id, picture, title, writer, location, resalePrice, originalPrice, yearsOfUse, postedIn, seller, verifiedSeller, orderedBy }) => <div key={_id} className="relative pb-16 p-3 border rounded-xl shadow-lg m-1">
                             <div className="flex flex-col gap-3">
                                 <div className='flex flex-col items-center text-center gap-5'>
                                     <img className='w-full h-full' src={picture} alt={title} />
@@ -65,12 +90,19 @@ const BooksByCategory = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <button className='btn btn-primary absolute bottom-4 left-4 right-4 mt-3'>Order Now</button>
+                                {
+                                    !!orderedBy ? <button className='btn btn-primary absolute bottom-4 left-4 right-4 mt-3' disabled={orderedBy !== user.email || cancelling} onClick={() => cancelOrder(_id)}>{orderedBy === user.email ? cancelling ? <Loader /> : 'Cancel Order' : 'Ordered'}</button> :
+                                        < label htmlFor='order-modal' className='btn btn-primary absolute bottom-4 left-4 right-4 mt-3' onClick={() => setOrderModal({ _id, buyer: user?.displayName, buyerEmail: user?.email, title, location, resalePrice })}>Order Now</label>
+                                }
                             </div>
                         </div>)
                     }
                 </div>
-            </div>
+                {
+                    orderModal && <OrderNowModal orderModal={orderModal} setOrderModal={setOrderModal} refetch={refetch} />
+                }
+                <Toaster />
+            </div >
     );
 };
 
