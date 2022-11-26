@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { WisdorageContext } from '../../ContextProvider/ContextProvider';
 import Loader from '../../components/Loader';
 import toast, { Toaster } from 'react-hot-toast';
+import ConfirmModal from '../../components/ConfirmModal';
 
 const MyOrders = () => {
+    const [modalData, setModalData] = useState(null);
     const { user } = useContext(WisdorageContext);
     const { data: orders, isLoading, refetch } = useQuery({
         queryKey: ['orders', user?.email],
@@ -15,7 +17,7 @@ const MyOrders = () => {
         }).then(res => res.json())
     })
 
-    const cancelOrder = id => {
+    const cancelOrder = ({ id }) => {
         fetch(`http://localhost:1234/order/${id}?email=${user?.email}`, {
             method: "DELETE",
             headers: {
@@ -66,7 +68,13 @@ const MyOrders = () => {
                                                 paid ? <i>Paid</i> : <button className='btn btn-sm btn-neutral'>Pay Now</button>
                                             }
                                         </td>
-                                        <td><button className='btn btn-error btn-sm' onClick={() => cancelOrder(bookId)}>Cancel Order</button></td>
+                                        <td><label htmlFor='confirm-modal' className='btn btn-error btn-sm' onClick={() => setModalData({
+                                            id: bookId,
+                                            action: cancelOrder,
+                                            setData: setModalData,
+                                            message: `Make sure you are aware of that your order for ${title} will be cancelled and anyone could buy this book after you cancel.`,
+                                            button: { bg: 'btn-error', text: 'Cancel Order' }
+                                        })}>Cancel Order</label></td>
                                     </tr>)
                                 }
                             </tbody>
@@ -75,6 +83,9 @@ const MyOrders = () => {
                 </div>
             }
             <Toaster position='bottom-left' />
+            {
+                modalData && <ConfirmModal data={modalData} />
+            }
         </>
     );
 };

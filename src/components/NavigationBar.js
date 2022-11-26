@@ -3,10 +3,12 @@ import { NavLink } from 'react-router-dom';
 import { WisdorageContext } from '../ContextProvider/ContextProvider';
 import useValidImg from '../hooks/useValidImg';
 import Loader from './Loader';
+import ConfirmModal from './ConfirmModal';
 
 const NavigationBar = () => {
     const { user, userLoading, logOut, updatingUser } = useContext(WisdorageContext);
     const [userPhoto, setUserPhoto] = useState(null);
+    const [modalData, setModalData] = useState(null);
     useValidImg(user?.photoURL, setUserPhoto);
 
     const navItems = <>
@@ -20,6 +22,13 @@ const NavigationBar = () => {
             </>
         }
     </>
+
+    const handleLogOut = () => {
+        logOut()
+            .then(() => setUserPhoto(null))
+            .catch(err => console.error(err.code))
+    }
+
     return (
         <div className="navbar">
             <div className="navbar-start">
@@ -57,14 +66,22 @@ const NavigationBar = () => {
                             <div className='divider'></div>
                             <ul className='menu gap-1 whitespace-nowrap'>
                                 <li><button className='btn btn-ghost btn-block rounded-md'>Update Profile</button></li>
-                                <li><button className='btn btn-primary rounded-md text-white' onClick={() => {
-                                    logOut().then(() => setUserPhoto(null)).catch(err => console.error(err.code))
-                                }}>Log Out</button></li>
+                                <li><label htmlFor='confirm-modal' className='btn btn-primary rounded-md text-white' onClick={() => {
+                                    setModalData({
+                                        action: handleLogOut,
+                                        setData: setModalData,
+                                        message: 'You will be logged out!',
+                                        button: { bg: 'btn-warning', text: 'Log Out' }
+                                    })
+                                }}>Log Out</label></li>
                             </ul>
                         </div>
                     </div> : <NavLink to="/login" className='btn btn-primary'>Log In</NavLink>
                 }
             </div>
+            {
+                modalData && <ConfirmModal data={modalData} />
+            }
         </div>
     );
 };
