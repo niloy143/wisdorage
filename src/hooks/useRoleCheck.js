@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 const useRoleCheck = email => {
     const { data, isLoading } = useQuery({
         queryKey: ['user', email],
-        queryFn: () => fetch(`http://localhost:1234/user?email=${email}`, {
+        queryFn: () => fetch(`https://wisdorage-server.vercel.app/user?email=${email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
             }

@@ -10,7 +10,7 @@ const MyOrders = () => {
     const { user } = useContext(WisdorageContext);
     const { data: orders, isLoading, refetch } = useQuery({
         queryKey: ['orders', user?.email],
-        queryFn: () => fetch(`http://localhost:1234/orders?email=${user?.email}`, {
+        queryFn: () => fetch(`https://wisdorage-server.vercel.app/orders?email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
             }
@@ -18,7 +18,7 @@ const MyOrders = () => {
     })
 
     const cancelOrder = ({ id }) => {
-        fetch(`http://localhost:1234/order/${id}?email=${user?.email}`, {
+        fetch(`https://wisdorage-server.vercel.app/order/${id}?email=${user?.email}`, {
             method: "DELETE",
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
@@ -68,7 +68,7 @@ const MyOrders = () => {
                                                 paid ? <i>Paid</i> : <button className='btn btn-sm btn-neutral'>Pay Now</button>
                                             }
                                         </td>
-                                        <td><label htmlFor='confirm-modal' className='btn btn-error btn-sm' onClick={() => setModalData({
+                                        <td><label htmlFor='cancel-order' className='btn btn-error btn-sm' onClick={() => setModalData({
                                             id: bookId,
                                             action: cancelOrder,
                                             setData: setModalData,
@@ -84,7 +84,7 @@ const MyOrders = () => {
             }
             <Toaster position='bottom-left' />
             {
-                modalData && <ConfirmModal data={modalData} />
+                modalData && <ConfirmModal data={modalData} modalId="cancel-order" />
             }
         </>
     );

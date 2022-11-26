@@ -11,7 +11,7 @@ const AllSeller = () => {
     const { user } = useContext(WisdorageContext);
     const { data: sellers, isLoading, refetch } = useQuery({
         queryKey: ['sellers', user?.email],
-        queryFn: () => fetch(`http://localhost:1234/users?role=seller&email=${user?.email}`, {
+        queryFn: () => fetch(`https://wisdorage-server.vercel.app/users?role=seller&email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
             }
@@ -19,7 +19,7 @@ const AllSeller = () => {
     })
 
     const verifySeller = ({ email, name }) => {
-        fetch(`http://localhost:1234/user/verify/${email}?email=${user?.email}`, {
+        fetch(`https://wisdorage-server.vercel.app/user/verify/${email}?email=${user?.email}`, {
             method: 'PUT',
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
@@ -39,7 +39,7 @@ const AllSeller = () => {
     }
 
     const cancelVerified = ({ email, name }) => {
-        fetch(`http://localhost:1234/user/cancel-verified/${email}?email=${user?.email}`, {
+        fetch(`https://wisdorage-server.vercel.app/user/cancel-verified/${email}?email=${user?.email}`, {
             method: 'PUT',
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
@@ -96,14 +96,14 @@ const AllSeller = () => {
                                         <td> {email} </td>
                                         <td>
                                             {
-                                                verified ? <label htmlFor='confirm-modal' className='btn btn-sm btn-error btn-block' onClick={() => setModalData({
+                                                verified ? <label htmlFor='modify-seller' className='btn btn-sm btn-error btn-block' onClick={() => setModalData({
                                                     email, name: displayName,
                                                     action: cancelVerified,
                                                     setData: setModalData,
                                                     message: `Make sure you are aware of that ${displayName} will not be verified seller anymore.`,
                                                     button: { bg: 'btn-error', text: 'Cancel Verified' }
                                                 })}>Cancel Verified</label> :
-                                                    <label htmlFor='confirm-modal' className='btn btn-sm btn-block bg-blue-500 border-0 text-white' onClick={() => setModalData({
+                                                    <label htmlFor='modify-seller' className='btn btn-sm btn-block bg-blue-500 border-0 text-white' onClick={() => setModalData({
                                                         email, name: displayName,
                                                         action: verifySeller,
                                                         setData: setModalData,
@@ -124,7 +124,7 @@ const AllSeller = () => {
             </div>
             <Toaster position='bottom-left' />
             {
-                modalData && <ConfirmModal data={modalData} />
+                modalData && <ConfirmModal data={modalData} modalId="modify-seller" />
             }
         </div>
     );

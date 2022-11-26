@@ -66,7 +66,7 @@ const NavigationBar = () => {
                             <div className='divider'></div>
                             <ul className='menu gap-1 whitespace-nowrap'>
                                 <li><button className='btn btn-ghost btn-block rounded-md'>Update Profile</button></li>
-                                <li><label htmlFor='confirm-modal' className='btn btn-primary rounded-md text-white' onClick={() => {
+                                <li><label htmlFor='logout' className='btn btn-primary rounded-md text-white' onClick={() => {
                                     setModalData({
                                         action: handleLogOut,
                                         setData: setModalData,
@@ -80,7 +80,7 @@ const NavigationBar = () => {
                 }
             </div>
             {
-                modalData && <ConfirmModal data={modalData} />
+                modalData && <ConfirmModal data={modalData} modalId="logout" />
             }
         </div>
     );
