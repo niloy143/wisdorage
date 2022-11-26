@@ -38,8 +38,8 @@ const Register = () => {
                             .catch(err => console.error(err.code))
                             .finally(() => {
                                 const { uid, displayName, email, photoURL } = user;
-                                axios.post('http://localhost:1234/users', { uid, displayName, email, photoURL, role });
-                                axios.get(`http://localhost:1234/jwt?email=${email}`)
+                                axios.post('https://wisdorage-server.vercel.app/users', { uid, displayName, email, photoURL, role });
+                                axios.get(`https://wisdorage-server.vercel.app/jwt?email=${email}`)
                                     .then(({ data: { token } }) => localStorage.setItem('wisdorage-token', token))
                                     .catch(err => console.error(err))
                                     .finally(() => {
@@ -127,7 +127,7 @@ const Register = () => {
                         </div>
                         <div className="form-control my-2">
                             <label className="font-semibold label"> Your Photo </label>
-                            <input type="file" className={`file-input file-input-bordered w-full ${errors.photo && 'file-input-error'}`} {
+                            <input type="file" accept='.jpg, .png, .jpeg, .webp' className={`file-input file-input-bordered w-full ${errors.photo && 'file-input-error'}`} {
                                 ...register('photo', {
                                     required: 'Please insert your photo',
                                     onChange: e => {

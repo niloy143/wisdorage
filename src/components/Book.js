@@ -67,7 +67,7 @@ const Book = ({ book: { _id, picture, title, writer, location, resalePrice, orig
                             </div>
                             <div className='flex gap-3 justify-between'>
                                 <h3 className='font-semibold w-full'>Year(s) of Usage:</h3>
-                                <p className='w-full text-end'>{yearsOfUse > 0 && yearsOfUse} {`${yearsOfUse > 0 ? yearsOfUse > 1 ? 'Years' : 'Year' : 'Less than a year'}`}</p>
+                                <p className='w-full text-end'>{yearsOfUse > 0 && yearsOfUse} {`${yearsOfUse === 1 ? 'Year' : yearsOfUse > 1 ? 'Years' : 'Less than a year'}`}</p>
                             </div>
                             <div className='flex gap-3 justify-between'>
                                 <h3 className='font-semibold w-full'>Where to get from:</h3>
@@ -85,7 +85,7 @@ const Book = ({ book: { _id, picture, title, writer, location, resalePrice, orig
             {
                 orderModal && <OrderNowModal orderModal={orderModal} setOrderModal={setOrderModal} refetch={refetch} />
             }
-            <Toaster />
+            <Toaster position='bottom-left' />
         </>
     );
 };

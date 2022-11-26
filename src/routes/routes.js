@@ -13,7 +13,9 @@ import AllBuyer from "../pages/Dashboard/AllBuyer";
 import BookCategories from "../pages/Home/BookCategories";
 import BooksByCategory from "../pages/BooksByCategory/BooksByCategory";
 import MyOrders from "../pages/Dashboard/MyOrders";
-import BuyerRoute from "./BuyerRoute";
+import AddBook from "../pages/Dashboard/AddBook";
+import SellerRoute from './SellerRoute';
+import MyBooks from "../pages/Dashboard/MyBooks";
 
 const routes = createBrowserRouter([
     {
@@ -60,6 +62,14 @@ const routes = createBrowserRouter([
                     {
                         path: '/dashboard/my-orders',
                         element: <MyOrders />
+                    },
+                    {
+                        path: '/dashboard/add-book',
+                        element: <SellerRoute><AddBook /></SellerRoute>
+                    },
+                    {
+                        path: '/dashboard/my-books',
+                        element: <SellerRoute><MyBooks /></SellerRoute>
                     },
                     {
                         path: '/dashboard/all-seller',

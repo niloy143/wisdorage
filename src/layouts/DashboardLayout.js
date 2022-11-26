@@ -19,12 +19,12 @@ const DashboardLayout = () => {
                 </div>
                 <div className="drawer-side">
                     <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
-                    <ul className="menu gap-1 p-4 bg-base-100 lg:bg-none w-80 text-base-content">
+                    <ul className="menu gap-1 p-4 bg-base-100 lg:bg-none max-w-[90vw] w-80 text-base-content">
                         <li><NavLink to="/dashboard/my-orders">My Orders</NavLink></li>
                         {
                             role === 'seller' ? <>
-                                <li><NavLink to="/dashboard/my-products">My Products</NavLink></li>
-                                <li><NavLink to="/dashboard/add-product">Add Product</NavLink></li>
+                                <li><NavLink to="/dashboard/my-books">My Books</NavLink></li>
+                                <li><NavLink to="/dashboard/add-book">Add Book</NavLink></li>
                             </> : role === 'admin' ? <>
                                 <li><NavLink to="/dashboard/all-seller">All Seller</NavLink></li>
                                 <li><NavLink to="/dashboard/all-buyer">All Buyer</NavLink></li>
