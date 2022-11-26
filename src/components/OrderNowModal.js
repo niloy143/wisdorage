@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
-import Loader from '../../components/Loader';
+import Loader from './Loader';
 
 const OrderNowModal = ({ orderModal: { _id, buyer, buyerEmail, title, location, resalePrice }, setOrderModal, refetch }) => {
     const [ordering, setOrdering] = useState(false);
@@ -13,7 +13,7 @@ const OrderNowModal = ({ orderModal: { _id, buyer, buyerEmail, title, location, 
             orderDate: Date.now()
         }
 
-        fetch(`https://wisdorage-server.vercel.app/order?email=${buyerEmail}`, {
+        fetch(`http://localhost:1234/order?email=${buyerEmail}`, {
             method: "POST",
             headers: {
                 'content-type': 'application/json',

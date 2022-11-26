@@ -17,7 +17,7 @@ const Login = () => {
         setLogging(true);
         login(email, password)
             .then(({ user: { email } }) => {
-                axios.get(`https://wisdorage-server.vercel.app/jwt?email=${email}`)
+                axios.get(`http://localhost:1234/jwt?email=${email}`)
                     .then(({ data: { token } }) => localStorage.setItem('wisdorage-token', token))
                     .catch(err => console.error(err))
                     .finally(() => setLogging(false))

@@ -10,11 +10,11 @@ const GoogleSignIn = ({ googleSignIn, googleSigning, setGoogleSigning }) => {
         googleSignIn()
             .then(result => {
                 const { uid, displayName, email, photoURL } = result.user;
-                axios.post('https://wisdorage-server.vercel.app/users', {
+                axios.post('http://localhost:1234/users', {
                     uid, displayName, email, photoURL,
                     role: 'buyer'
                 });
-                axios.get(`https://wisdorage-server.vercel.app/jwt?email=${email}`)
+                axios.get(`http://localhost:1234/jwt?email=${email}`)
                     .then(({ data: { token } }) => localStorage.setItem('wisdorage-token', token))
                     .catch(err => console.error(err))
                     .finally(() => setGoogleSigning(false))

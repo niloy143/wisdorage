@@ -7,7 +7,7 @@ import Loader from '../../components/Loader';
 const BookCategories = () => {
     const { data, isLoading } = useQuery({
         queryKey: ['categories'],
-        queryFn: () => axios.get(`https://wisdorage-server.vercel.app/categories`)
+        queryFn: () => axios.get(`http://localhost:1234/categories`)
     })
     const navigate = useNavigate();
 
