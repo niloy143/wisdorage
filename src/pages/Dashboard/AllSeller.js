@@ -1,11 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { WisdorageContext } from '../../ContextProvider/ContextProvider';
 import Loader from '../../components/Loader';
 import toast, { Toaster } from 'react-hot-toast';
 import { MdVerifiedUser } from 'react-icons/md';
+import ConfirmModal from '../../components/ConfirmModal';
 
 const AllSeller = () => {
+    const [modalData, setModalData] = useState(null);
     const { user } = useContext(WisdorageContext);
     const { data: sellers, isLoading, refetch } = useQuery({
         queryKey: ['sellers', user?.email],
@@ -16,7 +18,7 @@ const AllSeller = () => {
         }).then(res => res.json())
     })
 
-    const verifySeller = (email, name) => {
+    const verifySeller = ({ email, name }) => {
         fetch(`http://localhost:1234/user/verify/${email}?email=${user?.email}`, {
             method: 'PUT',
             headers: {
@@ -36,7 +38,7 @@ const AllSeller = () => {
             .catch(() => toast.error('Something went wrong!'))
     }
 
-    const cancelVerified = (email, name) => {
+    const cancelVerified = ({ email, name }) => {
         fetch(`http://localhost:1234/user/cancel-verified/${email}?email=${user?.email}`, {
             method: 'PUT',
             headers: {
@@ -85,7 +87,7 @@ const AllSeller = () => {
                                                 <div>
                                                     <div className="w-full text-end flex items-center justify-end gap-1 font-semibold">
                                                         <span>{displayName}</span>
-                                                        <span>{!!verified && <span className="tooltip flex items-center" data-tip="Verified Seller"><MdVerifiedUser className='text-blue-600' /></span>}</span>
+                                                        <span>{<span className="tooltip flex items-center" data-tip={`${!!verified ? "Verified Seller" : "Not Verified"}`}><MdVerifiedUser className={!!verified ? 'text-blue-600' : 'text-gray-400'} /></span>}</span>
                                                     </div>
                                                     <div className="text-sm opacity-50">{role.toUpperCase()}</div>
                                                 </div>
@@ -94,7 +96,20 @@ const AllSeller = () => {
                                         <td> {email} </td>
                                         <td>
                                             {
-                                                verified ? <button className='btn btn-sm btn-error btn-block' onClick={() => cancelVerified(email, displayName)}>Cancel Verified</button> : <button className='btn btn-sm btn-block bg-blue-500 border-0 text-white' onClick={() => verifySeller(email, displayName)}>Verify</button>
+                                                verified ? <label htmlFor='confirm-modal' className='btn btn-sm btn-error btn-block' onClick={() => setModalData({
+                                                    email, name: displayName,
+                                                    action: cancelVerified,
+                                                    setData: setModalData,
+                                                    message: `Make sure you are aware of that ${displayName} will not be verified seller anymore.`,
+                                                    button: { bg: 'btn-error', text: 'Cancel Verified' }
+                                                })}>Cancel Verified</label> :
+                                                    <label htmlFor='confirm-modal' className='btn btn-sm btn-block bg-blue-500 border-0 text-white' onClick={() => setModalData({
+                                                        email, name: displayName,
+                                                        action: verifySeller,
+                                                        setData: setModalData,
+                                                        message: `Make sure you are aware of that ${displayName} will be a verified seller.`,
+                                                        button: { bg: 'bg-blue-500 border-0 text-white', text: 'Verify' }
+                                                    })}>Verify</label>
                                             }
                                         </td>
                                         <td>
@@ -108,6 +123,9 @@ const AllSeller = () => {
                 }
             </div>
             <Toaster position='bottom-left' />
+            {
+                modalData && <ConfirmModal data={modalData} />
+            }
         </div>
     );
 };

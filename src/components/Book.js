@@ -50,7 +50,7 @@ const Book = ({ book: { _id, picture, title, writer, location, resalePrice, orig
                                 <h3 className='font-semibold w-full'>Seller:</h3>
                                 <p className='w-full text-end flex items-center justify-end gap-1 text-lg font-semibold'>
                                     <span>{seller}</span>
-                                    <span>{!!verifiedSeller && <span className="tooltip flex items-center" data-tip="Verified Seller"><MdVerifiedUser className='text-blue-600' /></span>}</span>
+                                    <span>{<span className="tooltip flex items-center" data-tip={`${!!verifiedSeller ? "Verified Seller" : "Not Verified"}`}><MdVerifiedUser className={!!verifiedSeller ? 'text-blue-600' : 'text-gray-400'} /></span>}</span>
                                 </p>
                             </div>
                             <div className='flex gap-3 justify-between'>
