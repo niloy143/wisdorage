@@ -2,17 +2,59 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useContext } from 'react';
 import { WisdorageContext } from '../../ContextProvider/ContextProvider';
 import Loader from '../../components/Loader';
+import toast, { Toaster } from 'react-hot-toast';
+import { MdVerifiedUser } from 'react-icons/md';
 
 const AllSeller = () => {
     const { user } = useContext(WisdorageContext);
-    const { data: sellers, isLoading } = useQuery({
+    const { data: sellers, isLoading, refetch } = useQuery({
         queryKey: ['sellers', user?.email],
-        queryFn: () => fetch(`http://localhost:1234/sellers?email=${user?.email}`, {
+        queryFn: () => fetch(`http://localhost:1234/users?role=seller&email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
             }
         }).then(res => res.json())
     })
+
+    const verifySeller = (email, name) => {
+        fetch(`http://localhost:1234/user/verify/${email}?email=${user?.email}`, {
+            method: 'PUT',
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
+            }
+        })
+            .then(res => res.json())
+            .then(({ verified }) => {
+                if (verified) {
+                    toast.success(`${name} is now a verified seller.`);
+                    refetch();
+                }
+                else {
+                    toast.error('Something went wrong!')
+                }
+            })
+            .catch(() => toast.error('Something went wrong!'))
+    }
+
+    const cancelVerified = (email, name) => {
+        fetch(`http://localhost:1234/user/cancel-verified/${email}?email=${user?.email}`, {
+            method: 'PUT',
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
+            }
+        })
+            .then(res => res.json())
+            .then(({ cancelled }) => {
+                if (cancelled) {
+                    toast.success(`${name} is now a normal seller.`);
+                    refetch();
+                }
+                else {
+                    toast.error('Something went wrong!')
+                }
+            })
+            .catch(() => toast.error('Something went wrong!'))
+    }
 
     return (
         <div>
@@ -41,7 +83,10 @@ const AllSeller = () => {
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <div className="font-bold">{displayName}</div>
+                                                    <div className="w-full text-end flex items-center justify-end gap-1 font-semibold">
+                                                        <span>{displayName}</span>
+                                                        <span>{!!verified && <span className="tooltip flex items-center" data-tip="Verified Seller"><MdVerifiedUser className='text-blue-600' /></span>}</span>
+                                                    </div>
                                                     <div className="text-sm opacity-50">{role.toUpperCase()}</div>
                                                 </div>
                                             </div>
@@ -49,7 +94,7 @@ const AllSeller = () => {
                                         <td> {email} </td>
                                         <td>
                                             {
-                                                verified ? <i>Verified</i> : <button className='btn btn-sm bg-blue-500 border-0 text-white'>Verify</button>
+                                                verified ? <button className='btn btn-sm btn-error btn-block' onClick={() => cancelVerified(email, displayName)}>Cancel Verified</button> : <button className='btn btn-sm btn-block bg-blue-500 border-0 text-white' onClick={() => verifySeller(email, displayName)}>Verify</button>
                                             }
                                         </td>
                                         <td>
@@ -62,6 +107,7 @@ const AllSeller = () => {
                     </div>
                 }
             </div>
+            <Toaster position='bottom-left' />
         </div>
     );
 };
