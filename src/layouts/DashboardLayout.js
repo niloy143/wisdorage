@@ -28,7 +28,7 @@ const DashboardLayout = () => {
                             </> : role === 'admin' ? <>
                                 <li><NavLink to="/dashboard/all-seller">All Seller</NavLink></li>
                                 <li><NavLink to="/dashboard/all-buyer">All Buyer</NavLink></li>
-                                <li><NavLink to="/dashboard/reported-items">Reported Items</NavLink></li>
+                                <li><NavLink to="/dashboard/reported-books">Reported Books</NavLink></li>
                             </> : <></>
                         }
                     </ul>

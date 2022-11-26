@@ -38,8 +38,8 @@ const Register = () => {
                             .catch(err => console.error(err.code))
                             .finally(() => {
                                 const { uid, displayName, email, photoURL } = user;
-                                axios.post('https://wisdorage-server.vercel.app/users', { uid, displayName, email, photoURL, role });
-                                axios.get(`https://wisdorage-server.vercel.app/jwt?email=${email}`)
+                                axios.post('http:/localhost:1234/user', { uid, displayName, email, photoURL, role });
+                                axios.get(`http:/localhost:1234/jwt?email=${email}`)
                                     .then(({ data: { token } }) => localStorage.setItem('wisdorage-token', token))
                                     .catch(err => console.error(err))
                                     .finally(() => {
