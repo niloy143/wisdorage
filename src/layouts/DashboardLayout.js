@@ -20,17 +20,16 @@ const DashboardLayout = () => {
                 <div className="drawer-side">
                     <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
                     <ul className="menu gap-1 p-4 bg-base-100 lg:bg-none w-80 text-base-content">
+                        <li><NavLink to="/dashboard/my-orders">My Orders</NavLink></li>
                         {
-                            role === 'buyer' ?
-                                <li><NavLink to="/dashboard/my-orders">My Orders</NavLink></li> :
-                                role === 'seller' ? <>
-                                    <li><NavLink to="/dashboard/my-products">My Products</NavLink></li>
-                                    <li><NavLink to="/dashboard/add-product">Add Product</NavLink></li>
-                                </> : role === 'admin' ? <>
-                                    <li><NavLink to="/dashboard/all-seller">All Seller</NavLink></li>
-                                    <li><NavLink to="/dashboard/all-buyer">All Buyer</NavLink></li>
-                                    <li><NavLink to="/dashboard/reported-items">Reported Items</NavLink></li>
-                                </> : <></>
+                            role === 'seller' ? <>
+                                <li><NavLink to="/dashboard/my-products">My Products</NavLink></li>
+                                <li><NavLink to="/dashboard/add-product">Add Product</NavLink></li>
+                            </> : role === 'admin' ? <>
+                                <li><NavLink to="/dashboard/all-seller">All Seller</NavLink></li>
+                                <li><NavLink to="/dashboard/all-buyer">All Buyer</NavLink></li>
+                                <li><NavLink to="/dashboard/reported-items">Reported Items</NavLink></li>
+                            </> : <></>
                         }
                     </ul>
 

@@ -23,14 +23,14 @@ const GoogleSignIn = ({ googleSignIn, googleSigning, setGoogleSigning }) => {
     }
 
     return (
-        <button className={`flex justify-center items-center gap-2 border rounded-lg px-5 py-3 w-full ${googleSigning ? 'cursor-not-allowed bg-gray-200' : 'active:scale-95 transition border-gray-300 cursor-pointer hover:bg-gray-200'} select-none`}
+        <button className={`flex justify-center items-center gap-2 border rounded-lg px-2 sm:px-5 py-3 w-full ${googleSigning ? 'cursor-not-allowed bg-gray-200' : 'active:scale-95 transition border-gray-300 cursor-pointer hover:bg-gray-200'} select-none`}
             disabled={googleSigning}
             onClick={handleGoogleSignIn}
         >
             {
                 googleSigning ? <Loader /> : <>
                     <FcGoogle className='text-2xl' />
-                    <span className='text-xl font-semibold'>CONTINUE WITH GOOGLE</span>
+                    <span className='sm:text-xl font-semibold'>CONTINUE WITH GOOGLE</span>
                 </>
             }
         </button>

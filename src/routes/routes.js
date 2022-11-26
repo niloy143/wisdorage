@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import Home from "../pages/Home/Home";
 import Blog from "../pages/Blog/Blog";
@@ -12,6 +12,8 @@ import AdminRoute from "./AdminRoute";
 import AllBuyer from "../pages/Dashboard/AllBuyer";
 import BookCategories from "../pages/Home/BookCategories";
 import BooksByCategory from "../pages/BooksByCategory/BooksByCategory";
+import MyOrders from "../pages/Dashboard/MyOrders";
+import BuyerRoute from "./BuyerRoute";
 
 const routes = createBrowserRouter([
     {
@@ -51,6 +53,14 @@ const routes = createBrowserRouter([
                 path: '/dashboard',
                 element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
                 children: [
+                    {
+                        path: '/dashboard',
+                        element: <Navigate to="/dashboard/my-orders" />
+                    },
+                    {
+                        path: '/dashboard/my-orders',
+                        element: <MyOrders />
+                    },
                     {
                         path: '/dashboard/all-seller',
                         element: <AdminRoute><AllSeller /></AdminRoute>

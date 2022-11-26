@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import Loader from './Loader';
 
-const OrderNowModal = ({ orderModal: { _id, buyer, buyerEmail, title, location, resalePrice }, setOrderModal, refetch }) => {
+const OrderNowModal = ({ orderModal: { _id, buyer, buyerEmail, title, picture, location, resalePrice }, setOrderModal, refetch }) => {
     const [ordering, setOrdering] = useState(false);
     const orderHandler = e => {
         e.preventDefault();
         setOrdering(true);
         const orderInformation = {
-            bookId: _id, buyer, buyerEmail, title, location, resalePrice,
+            bookId: _id, buyer, buyerEmail, title, picture, location, resalePrice,
             buyerNumber: e.target.phone.value,
             orderDate: Date.now()
         }

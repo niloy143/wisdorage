@@ -77,7 +77,7 @@ const Book = ({ book: { _id, picture, title, writer, location, resalePrice, orig
                     </div>
                     {
                         !!orderedBy ? <button className='btn btn-primary absolute bottom-4 left-4 right-4 mt-3' disabled={orderedBy !== user?.email || cancelling} onClick={() => cancelOrder(_id)}>{orderedBy === user?.email ? cancelling ? <Loader /> : 'Cancel Order' : 'Ordered'}</button> : !user ? <button className='btn btn-primary absolute bottom-4 left-4 right-4 mt-3' onClick={() => navigate('/login')}>Login to Order</button> :
-                            < label htmlFor='order-modal' className='btn btn-primary absolute bottom-4 left-4 right-4 mt-3' onClick={() => setOrderModal({ _id, buyer: user?.displayName, buyerEmail: user?.email, title, location, resalePrice })}>Order Now</label>
+                            < label htmlFor='order-modal' className='btn btn-primary absolute bottom-4 left-4 right-4 mt-3' onClick={() => setOrderModal({ _id, buyer: user?.displayName, buyerEmail: user?.email, title, picture, location, resalePrice })}>Order Now</label>
                     }
                 </div>
             </div>
