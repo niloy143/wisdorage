@@ -4,9 +4,11 @@ import { WisdorageContext } from '../../ContextProvider/ContextProvider';
 import Loader from '../../components/Loader';
 import toast, { Toaster } from 'react-hot-toast';
 import ConfirmModal from '../../components/ConfirmModal';
+import PaymentModal from '../../components/PaymentModal';
 
 const MyOrders = () => {
     const [modalData, setModalData] = useState(null);
+    const [paymentModal, setPaymentData] = useState(null);
     const { user } = useContext(WisdorageContext);
     const { data: orders, isLoading, refetch } = useQuery({
         queryKey: ['orders', user?.email],
@@ -65,7 +67,9 @@ const MyOrders = () => {
                                         <td>{resalePrice} BDT</td>
                                         <td>
                                             {
-                                                paid ? <i>Paid</i> : <button className='btn btn-sm btn-neutral'>Pay Now</button>
+                                                paid ? <i>Paid</i> : <label htmlFor='payment-modal' className='btn btn-sm btn-neutral' onClick={() => setPaymentData({
+                                                    _id, setPaymentData, title, resalePrice
+                                                })}>Pay Now</label>
                                             }
                                         </td>
                                         <td><label htmlFor='cancel-order' className='btn btn-error btn-sm' onClick={() => setModalData({
@@ -85,6 +89,9 @@ const MyOrders = () => {
             <Toaster position='bottom-left' />
             {
                 modalData && <ConfirmModal data={modalData} modalId="cancel-order" />
+            }
+            {
+                paymentModal && <PaymentModal data={paymentModal} />
             }
         </>
     );
