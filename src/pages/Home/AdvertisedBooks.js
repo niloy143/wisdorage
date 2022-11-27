@@ -18,7 +18,7 @@ const AdvertisedBooks = () => {
                 <h2 className='text-3xl sm:text-4xl font-bold text-center my-8 sm:my-12'>Advertised Books</h2>
                 <div className='mx-3 grid sm:grid-cols-2 xl:grid-cols-3 gap-5'>
                     {
-                        data.data.filter(({ available }) => !!available).map(book => <Book key={book._id} book={book} user={user} refetch={refetch} />)
+                        data.data.filter(({ available, reportedBy }) => !!available && (!reportedBy || !(reportedBy.includes(user?.email)))).map(book => <Book key={book._id} book={book} user={user} refetch={refetch} />)
                     }
                 </div>
             </div>

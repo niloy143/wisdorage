@@ -24,7 +24,7 @@ const BooksByCategory = () => {
                 <h2 className='text-3xl sm:text-5xl px-5 font-bold mb-5'>{categoryId.split('-').map(w => w.split('')[0].toUpperCase() + w.slice(1, w.length)).join(' ')}</h2>
                 <div className='mx-3 grid sm:grid-cols-2 xl:grid-cols-3 gap-5'>
                     {
-                        books.filter(({ available }) => !!available).map(book => <Book key={book._id} book={book} user={user} refetch={refetch} />)
+                        books.filter(({ available, reportedBy }) => !!available && (!reportedBy || !(reportedBy.includes(user?.email)))).map(book => <Book key={book._id} book={book} user={user} refetch={refetch} />)
                     }
                 </div>
             </div >

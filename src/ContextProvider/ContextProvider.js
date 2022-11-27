@@ -12,18 +12,20 @@ const ContextProvider = ({ children }) => {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, user => {
-            fetch(`https://wisdorage-server.vercel.app/is-deleted/${user?.email}`)
-                .then(res => res.json())
-                .then(({ isDeleted }) => {
-                    if (isDeleted) {
-                        signOut(auth).then(() => localStorage.removeItem('wisdorage-token'));
-                    }
-                    else {
-                        setUser(user);
-                    }
-                })
-                .catch(err => console.error(err))
-                .finally(() => setUserLoading(false))
+            if (user) {
+                fetch(`https://wisdorage-server.vercel.app/is-deleted/${user?.email}`)
+                    .then(res => res.json())
+                    .then(({ isDeleted }) => {
+                        if (isDeleted) {
+                            signOut(auth).then(() => localStorage.removeItem('wisdorage-token'));
+                        }
+                        else {
+                            setUser(user);
+                        }
+                    })
+                    .catch(err => console.error(err))
+                    .finally(() => setUserLoading(false))
+            }
         })
 
         return () => unsubscribe();

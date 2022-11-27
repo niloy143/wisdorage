@@ -5,10 +5,13 @@ import { MdVerifiedUser } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import Loader from './Loader';
 import OrderNowModal from './OrderNowModal';
+import { GoReport } from 'react-icons/go';
+import ConfirmModal from './ConfirmModal';
 
-const Book = ({ book: { _id, picture, title, writer, location, resalePrice, originalPrice, yearsOfUse, postedIn, seller, verifiedSeller, orderedBy }, user, refetch }) => {
+const Book = ({ book: { _id, picture, title, writer, location, resalePrice, originalPrice, yearsOfUse, postedIn, seller, verifiedSeller, orderedBy, reportedBy }, user, refetch }) => {
     const [orderModal, setOrderModal] = useState(null);
     const [cancelling, setCancelling] = useState(false);
+    const [reportModal, setReportModal] = useState(null);
     const navigate = useNavigate();
 
     const cancelOrder = id => {
@@ -32,7 +35,29 @@ const Book = ({ book: { _id, picture, title, writer, location, resalePrice, orig
             .catch(() => toast.error('Something Went Wrong!'))
             .finally(() => setCancelling(false))
     }
-    
+
+    const reportBook = ({ _id, reportedBy }) => {
+        fetch(`http://localhost:1234/report/book/${_id}?email=${user?.email}`, {
+            method: "PUT",
+            headers: {
+                'content-type': 'application/json',
+                authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
+            },
+            body: JSON.stringify(reportedBy ? [...reportedBy, user.email] : [user.email])
+        })
+            .then(res => res.json())
+            .then(({ modifiedCount }) => {
+                if (modifiedCount > 0) {
+                    toast.success('Reported Successful');
+                    refetch();
+                }
+                else {
+                    toast.error('Something went wrong!')
+                }
+            })
+            .catch(() => toast.error('Something went wrong!'))
+    }
+
     return (
         <>
             <div className="relative pb-16 p-3 border rounded-xl shadow-lg m-1">
@@ -75,10 +100,21 @@ const Book = ({ book: { _id, picture, title, writer, location, resalePrice, orig
                             </div>
                         </div>
                     </div>
-                    {
-                        !!orderedBy ? <button className='btn btn-primary absolute bottom-4 left-4 right-4 mt-3' disabled={orderedBy !== user?.email || cancelling} onClick={() => cancelOrder(_id)}>{orderedBy === user?.email ? cancelling ? <Loader /> : 'Cancel Order' : 'Ordered'}</button> : !user ? <button className='btn btn-primary absolute bottom-4 left-4 right-4 mt-3' onClick={() => navigate('/login')}>Login to Order</button> :
-                            < label htmlFor='order-modal' className='btn btn-primary absolute bottom-4 left-4 right-4 mt-3' onClick={() => setOrderModal({ _id, buyer: user?.displayName, buyerEmail: user?.email, title, picture, location, resalePrice })}>Order Now</label>
-                    }
+                    <div className='flex items-center gap-1 absolute bottom-4 left-4 right-4 mt-3'>
+                        {
+                            !!orderedBy ? <button className='btn btn-primary grow' disabled={orderedBy !== user?.email || cancelling} onClick={() => cancelOrder(_id)}>{orderedBy === user?.email ? cancelling ? <Loader /> : 'Cancel Order' : 'Ordered'}</button> : !user ? <button className='btn btn-primary absolute bottom-4 left-4 right-4 mt-3' onClick={() => navigate('/login')}>Login to Order</button> :
+                                < label htmlFor='order-modal' className='btn btn-primary grow' onClick={() => setOrderModal({ _id, buyer: user?.displayName, buyerEmail: user?.email, title, picture, location, resalePrice })}>Order Now</label>
+                        }
+                        <div className="tooltip" data-tip="Report">
+                            <label htmlFor='report-modal' className='btn btn-primary' onClick={() => setReportModal({
+                                _id, reportedBy,
+                                setData: setReportModal,
+                                action: reportBook,
+                                message: `You will no longer be able to see or order "${title}".`,
+                                button: { text: 'Report' }
+                            })}><GoReport className='text-xl' /></label>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -86,6 +122,9 @@ const Book = ({ book: { _id, picture, title, writer, location, resalePrice, orig
                 orderModal && <OrderNowModal orderModal={orderModal} setOrderModal={setOrderModal} refetch={refetch} />
             }
             <Toaster position='bottom-left' />
+            {
+                reportModal && <ConfirmModal data={reportModal} modalId="report-modal" />
+            }
         </>
     );
 };
