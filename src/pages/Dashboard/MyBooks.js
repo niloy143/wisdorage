@@ -11,7 +11,7 @@ const MyBooks = () => {
     const [editModal, setEditModal] = useState(null);
     const { data: books, isLoading, refetch } = useQuery({
         queryKey: ['books', 'seller', user?.email],
-        queryFn: () => fetch(`http://localhost:1234/my-books?email=${user?.email}`, {
+        queryFn: () => fetch(`https://wisdorage-server.vercel.app/my-books?email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
             }
@@ -19,7 +19,7 @@ const MyBooks = () => {
     })
 
     const advertise = ({ _id }) => {
-        fetch(`http://localhost:1234/ad/book/${_id}?email=${user?.email}`, {
+        fetch(`https://wisdorage-server.vercel.app/ad/book/${_id}?email=${user?.email}`, {
             method: "PUT",
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
@@ -110,7 +110,7 @@ const EditModal = ({ data: { _id, title, close, resalePrice, location, available
             available: status
         }
 
-        fetch(`http://localhost:1234/edit/book/${_id}?email=${email}`, {
+        fetch(`https://wisdorage-server.vercel.app/edit/book/${_id}?email=${email}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json',

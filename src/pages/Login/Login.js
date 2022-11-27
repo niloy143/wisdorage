@@ -16,7 +16,7 @@ const Login = () => {
     const loginHandler = ({ email, password }) => {
         setLogging(true);
 
-        fetch(`http://localhost:1234/is-deleted/${email}`)
+        fetch(`https://wisdorage-server.vercel.app/is-deleted/${email}`)
             .then(res => res.json())
             .then(({ isDeleted }) => {
                 if (isDeleted) {
@@ -29,7 +29,7 @@ const Login = () => {
                 else {
                     login(email, password)
                         .then(({ user: { email } }) => {
-                            axios.get(`http://localhost:1234/jwt?email=${email}`)
+                            axios.get(`https://wisdorage-server.vercel.app/jwt?email=${email}`)
                                 .then(({ data: { token } }) => localStorage.setItem('wisdorage-token', token))
                                 .catch(err => console.error(err))
                                 .finally(() => setLogging(false))

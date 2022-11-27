@@ -1,18 +1,41 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { WisdorageContext } from '../../ContextProvider/ContextProvider';
 import Loader from '../../components/Loader';
+import toast, { Toaster } from 'react-hot-toast';
+import ConfirmModal from '../../components/ConfirmModal';
 
 const AllBuyer = () => {
+    const [modalData, setModalData] = useState(null);
     const { user } = useContext(WisdorageContext);
-    const { data: buyers, isLoading } = useQuery({
+    const { data: buyers, isLoading, refetch } = useQuery({
         queryKey: ['buyers', user?.email],
-        queryFn: () => fetch(`http://localhost:1234/users?role=buyer&email=${user?.email}`, {
+        queryFn: () => fetch(`https://wisdorage-server.vercel.app/users?role=buyer&email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
             }
         }).then(res => res.json())
     })
+
+    const deleteUser = ({ email }) => {
+        fetch(`https://wisdorage-server.vercel.app/user/${email}?email=${user?.email}`, {
+            method: "DELETE",
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
+            }
+        })
+            .then(res => res.json())
+            .then(({ done }) => {
+                if (done) {
+                    toast.success(`Successfully deleted`);
+                    refetch();
+                }
+                else {
+                    toast.error('Something went wrong!')
+                }
+            })
+            .catch(() => toast.error('Something went wrong!'))
+    }
 
     return (
         <div>
@@ -30,7 +53,7 @@ const AllBuyer = () => {
                             </thead>
                             <tbody>
                                 {
-                                    buyers.map(({ _id, displayName, email, photoURL, role }) => <tr key={_id}>
+                                    buyers.filter(({ deleted }) => !deleted).map(({ _id, displayName, email, photoURL, role }) => <tr key={_id}>
 
                                         <td>
                                             <div className="flex items-center space-x-3">
@@ -47,7 +70,16 @@ const AllBuyer = () => {
                                         </td>
                                         <td> {email} </td>
                                         <td>
-                                            <button className='btn btn-sm btn-error'>Delete</button>
+                                            <label htmlFor='confirm-delete' className='btn btn-sm btn-error' onClick={() => setModalData({
+                                                email,
+                                                setData: setModalData,
+                                                action: deleteUser,
+                                                message: `Dangerous decision! Think again and again and again before deleting ${displayName}. \n 
+                                                Once you delete him, all of his data (e.g. orders, books, and etc.) will be lost forever. \n 
+                                                And most dangerously, It can never be undone! \n 
+                                                Think ${user.displayName} think, don't misuse your power.`,
+                                                button: { bg: 'btn-error', text: `Delete ${displayName}` }
+                                            })}>Delete</label>
                                         </td>
                                     </tr>)
                                 }
@@ -56,6 +88,10 @@ const AllBuyer = () => {
                     </div>
                 }
             </div>
+            {
+                modalData && <ConfirmModal data={modalData} modalId="confirm-delete" />
+            }
+            <Toaster position='bottom-left' />
         </div>
     );
 };

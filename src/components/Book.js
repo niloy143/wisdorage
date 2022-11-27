@@ -13,7 +13,7 @@ const Book = ({ book: { _id, picture, title, writer, location, resalePrice, orig
 
     const cancelOrder = id => {
         setCancelling(true);
-        fetch(`http://localhost:1234/order/${id}?email=${user?.email}`, {
+        fetch(`https://wisdorage-server.vercel.app/order/${id}?email=${user?.email}`, {
             method: "DELETE",
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`

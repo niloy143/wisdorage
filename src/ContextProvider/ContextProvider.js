@@ -12,7 +12,7 @@ const ContextProvider = ({ children }) => {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, user => {
-            fetch(`http://localhost:1234/is-deleted/${user?.email}`)
+            fetch(`https://wisdorage-server.vercel.app/is-deleted/${user?.email}`)
                 .then(res => res.json())
                 .then(({ isDeleted }) => {
                     if (isDeleted) {

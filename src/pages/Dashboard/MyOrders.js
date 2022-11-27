@@ -10,7 +10,7 @@ const MyOrders = () => {
     const { user } = useContext(WisdorageContext);
     const { data: orders, isLoading, refetch } = useQuery({
         queryKey: ['orders', user?.email],
-        queryFn: () => fetch(`http://localhost:1234/orders?email=${user?.email}`, {
+        queryFn: () => fetch(`https://wisdorage-server.vercel.app/orders?email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
             }
@@ -18,7 +18,7 @@ const MyOrders = () => {
     })
 
     const cancelOrder = ({ id }) => {
-        fetch(`http://localhost:1234/order/${id}?email=${user?.email}`, {
+        fetch(`https://wisdorage-server.vercel.app/order/${id}?email=${user?.email}`, {
             method: "DELETE",
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
