@@ -43,7 +43,7 @@ const AddBook = () => {
                     condition,
                 }
                 
-                fetch(`https://wisdorage-server.vercel.app/book?email=${user.email}`, {
+                fetch(`http://localhost:1234/book?email=${user.email}`, {
                     method: "POST",
                     headers: {
                         'content-type': 'application/json',

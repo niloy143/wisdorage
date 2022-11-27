@@ -11,7 +11,7 @@ const BooksByCategory = () => {
 
     const { data: books, isLoading, refetch } = useQuery({
         queryKey: [categoryId],
-        queryFn: () => fetch(`https://wisdorage-server.vercel.app/books/${categoryId}?email=${user?.email}`, {
+        queryFn: () => fetch(`http://localhost:1234/books/${categoryId}?email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
             }

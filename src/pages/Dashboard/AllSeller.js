@@ -11,7 +11,7 @@ const AllSeller = () => {
     const { user } = useContext(WisdorageContext);
     const { data: sellers, isLoading, refetch } = useQuery({
         queryKey: ['sellers', user?.email],
-        queryFn: () => fetch(`https://wisdorage-server.vercel.app/users?role=seller&email=${user?.email}`, {
+        queryFn: () => fetch(`http://localhost:1234/users?role=seller&email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
             }
@@ -19,7 +19,7 @@ const AllSeller = () => {
     })
 
     const verifySeller = ({ email, name }) => {
-        fetch(`https://wisdorage-server.vercel.app/user/verify/${email}?email=${user?.email}`, {
+        fetch(`http://localhost:1234/user/verify/${email}?email=${user?.email}`, {
             method: 'PUT',
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
@@ -39,7 +39,7 @@ const AllSeller = () => {
     }
 
     const cancelVerified = ({ email, name }) => {
-        fetch(`https://wisdorage-server.vercel.app/user/cancel-verified/${email}?email=${user?.email}`, {
+        fetch(`http://localhost:1234/user/cancel-verified/${email}?email=${user?.email}`, {
             method: 'PUT',
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`

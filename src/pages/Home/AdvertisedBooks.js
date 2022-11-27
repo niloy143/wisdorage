@@ -9,7 +9,7 @@ const AdvertisedBooks = () => {
     const { user, userLoading } = useContext(WisdorageContext);
     const { data, isLoading, refetch } = useQuery({
         queryKey: ['advertised'],
-        queryFn: () => axios.get(`https://wisdorage-server.vercel.app/ad/books`)
+        queryFn: () => axios.get(`http://localhost:1234/ad/books`)
     })
 
     return (

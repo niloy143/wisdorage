@@ -13,7 +13,7 @@ const OrderNowModal = ({ orderModal: { _id, buyer, buyerEmail, title, picture, l
             orderDate: Date.now()
         }
 
-        fetch(`https://wisdorage-server.vercel.app/order?email=${buyerEmail}`, {
+        fetch(`http://localhost:1234/order?email=${buyerEmail}`, {
             method: "POST",
             headers: {
                 'content-type': 'application/json',

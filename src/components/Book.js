@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { formatDistanceToNowStrict } from 'date-fns';
 import React, { useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import { MdVerifiedUser } from 'react-icons/md';
@@ -13,7 +13,7 @@ const Book = ({ book: { _id, picture, title, writer, location, resalePrice, orig
 
     const cancelOrder = id => {
         setCancelling(true);
-        fetch(`https://wisdorage-server.vercel.app/order/${id}?email=${user?.email}`, {
+        fetch(`http://localhost:1234/order/${id}?email=${user?.email}`, {
             method: "DELETE",
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
@@ -32,7 +32,7 @@ const Book = ({ book: { _id, picture, title, writer, location, resalePrice, orig
             .catch(() => toast.error('Something Went Wrong!'))
             .finally(() => setCancelling(false))
     }
-
+    
     return (
         <>
             <div className="relative pb-16 p-3 border rounded-xl shadow-lg m-1">
@@ -54,8 +54,8 @@ const Book = ({ book: { _id, picture, title, writer, location, resalePrice, orig
                                 </p>
                             </div>
                             <div className='flex gap-3 justify-between'>
-                                <h3 className='font-semibold w-full'>Posted In:</h3>
-                                <p className='w-full text-end'>{format(postedIn, 'PP')}</p>
+                                <h3 className='font-semibold w-full'>Posted:</h3>
+                                <p className='w-full text-end'>{formatDistanceToNowStrict(postedIn)} ago</p>
                             </div>
                             <div className='flex gap-3 justify-between'>
                                 <h3 className='font-semibold w-full'>Resale Price:</h3>

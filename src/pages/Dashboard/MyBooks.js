@@ -7,7 +7,8 @@ import ConfirmModal from '../../components/ConfirmModal';
 
 const MyBooks = () => {
     const { user } = useContext(WisdorageContext);
-    const [modalData, setModalData] = useState(null);
+    const [advertiseModal, setAdvertiseModal] = useState(null);
+    const [editModal, setEditModal] = useState(null);
     const { data: books, isLoading, refetch } = useQuery({
         queryKey: ['books', 'seller', user?.email],
         queryFn: () => fetch(`http://localhost:1234/my-books?email=${user?.email}`, {
@@ -64,15 +65,18 @@ const MyBooks = () => {
                                         <td>{title}</td>
                                         <td>{available ? 'Available' : 'Sold'}</td>
                                         <td>
-                                            <label htmlFor='' className='btn btn-sm mr-1'>Edit</label>
+                                            <label htmlFor='edit-modal' className='btn btn-sm mr-1' onClick={() => setEditModal({
+                                                title,
+                                                close: setEditModal
+                                            })}>Edit</label>
                                         </td>
                                         <td className='text-center'>
                                             {
-                                                advertised ? <i>Advertised</i> :
-                                                    <label htmlFor='my-books' className='btn btn-sm btn-block' onClick={() => setModalData({
+                                                !available ? <i>Unavailable</i> : advertised ? <i>Advertised</i> :
+                                                    <label htmlFor='advertise' className='btn btn-sm btn-block' onClick={() => setAdvertiseModal({
                                                         _id,
                                                         action: advertise,
-                                                        setData: setModalData,
+                                                        setData: setAdvertiseModal,
                                                         message: `Your book "${title}" will be advertised.`,
                                                         button: { bg: 'btn-accent', text: 'Advertise' }
                                                     })}>Advertise</label>
@@ -86,11 +90,27 @@ const MyBooks = () => {
                 </div>
             }
             <Toaster position='bottom-left' />
-            {
-                modalData && <ConfirmModal data={modalData} modalId="my-books" />
-            }
+            {advertiseModal && <ConfirmModal data={advertiseModal} modalId="advertise" />}
+            {editModal && <EditModal data={editModal} />}
         </>
     );
 };
+
+const EditModal = ({ data: { title, close } }) => {
+    console.log(title)
+    return (
+        <>
+            <input type="checkbox" id="edit-modal" className="modal-toggle" />
+            <div className="modal">
+                <div className="modal-box relative">
+                    <label htmlFor="edit-modal" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                    <h3 className="text-lg font-bold">Congratulations random Internet user!</h3>
+                    <p className="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for free!</p>
+                    <button onClick={() => close(null)}>Close</button>
+                </div>
+            </div>
+        </>
+    );
+}
 
 export default MyBooks;
