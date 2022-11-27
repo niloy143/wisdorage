@@ -19,12 +19,16 @@ const ContextProvider = ({ children }) => {
                         if (isDeleted) {
                             signOut(auth).then(() => localStorage.removeItem('wisdorage-token'));
                         }
-                        else {
-                            setUser(user);
-                        }
                     })
                     .catch(err => console.error(err))
-                    .finally(() => setUserLoading(false))
+                    .finally(() => {
+                        setUser(user)
+                        setUserLoading(false)
+                    })
+            }
+            else {
+                setUser(null);
+                setUserLoading(false);
             }
         })
 

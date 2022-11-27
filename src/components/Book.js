@@ -102,7 +102,7 @@ const Book = ({ book: { _id, picture, title, writer, location, resalePrice, orig
                     </div>
                     <div className='flex items-center gap-1 absolute bottom-4 left-4 right-4 mt-3'>
                         {
-                            !!orderedBy ? <button className='btn btn-primary grow' disabled={orderedBy !== user?.email || cancelling} onClick={() => cancelOrder(_id)}>{orderedBy === user?.email ? cancelling ? <Loader /> : 'Cancel Order' : 'Ordered'}</button> : !user ? <button className='btn btn-primary absolute bottom-4 left-4 right-4 mt-3' onClick={() => navigate('/login')}>Login to Order</button> :
+                            !!orderedBy ? <button className='btn btn-primary grow' disabled={orderedBy !== user?.email || cancelling} onClick={() => cancelOrder(_id)}>{orderedBy === user?.email ? cancelling ? <Loader /> : 'Cancel Order' : 'Ordered'}</button> : !user ? <button className='btn btn-primary grow' onClick={() => navigate('/login')}>Login to Order</button> :
                                 < label htmlFor='order-modal' className='btn btn-primary grow' onClick={() => setOrderModal({ _id, buyer: user?.displayName, buyerEmail: user?.email, title, picture, location, resalePrice })}>Order Now</label>
                         }
                         <div className="tooltip" data-tip="Report">

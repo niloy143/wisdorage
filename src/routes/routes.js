@@ -16,6 +16,7 @@ import MyOrders from "../pages/Dashboard/MyOrders";
 import AddBook from "../pages/Dashboard/AddBook";
 import SellerRoute from './SellerRoute';
 import MyBooks from "../pages/Dashboard/MyBooks";
+import ReportedBooks from "../pages/ReportedBooks/ReportedBooks";
 
 const routes = createBrowserRouter([
     {
@@ -78,6 +79,10 @@ const routes = createBrowserRouter([
                     {
                         path: '/dashboard/all-buyer',
                         element: <AdminRoute><AllBuyer /></AdminRoute>
+                    },
+                    {
+                        path: '/dashboard/reported-books',
+                        element: <AdminRoute><ReportedBooks /></AdminRoute>
                     },
                 ]
             }
