@@ -8,7 +8,7 @@ const ReportedBooks = () => {
     const { user } = useContext(WisdorageContext);
     const { data: books, isLoading, refetch } = useQuery({
         queryKey: ['reported-books'],
-        queryFn: () => fetch(`http://localhost:1234/reported-books?email=${user?.email}`, {
+        queryFn: () => fetch(`https://wisdorage-server.vercel.app/reported-books?email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
             }
@@ -16,7 +16,7 @@ const ReportedBooks = () => {
     })
 
     const removeReport = id => {
-        fetch(`http://localhost:1234/remove-report/${id}?email=${user?.email}`, {
+        fetch(`https://wisdorage-server.vercel.app/remove-report/${id}?email=${user?.email}`, {
             method: "PUT",
             headers: {
                 authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`

@@ -37,7 +37,7 @@ const Book = ({ book: { _id, picture, title, writer, location, resalePrice, orig
     }
 
     const reportBook = ({ _id, reportedBy }) => {
-        fetch(`http://localhost:1234/report/book/${_id}?email=${user?.email}`, {
+        fetch(`https://wisdorage-server.vercel.app/report/book/${_id}?email=${user?.email}`, {
             method: "PUT",
             headers: {
                 'content-type': 'application/json',
