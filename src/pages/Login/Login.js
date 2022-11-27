@@ -15,34 +15,49 @@ const Login = () => {
 
     const loginHandler = ({ email, password }) => {
         setLogging(true);
-        login(email, password)
-            .then(({ user: { email } }) => {
-                axios.get(`http://localhost:1234/jwt?email=${email}`)
-                    .then(({ data: { token } }) => localStorage.setItem('wisdorage-token', token))
-                    .catch(err => console.error(err))
-                    .finally(() => setLogging(false))
-            })
-            .catch(err => {
-                switch (err.code) {
-                    case 'auth/user-not-found':
-                        setError('email', {
-                            type: 'authentication',
-                            message: 'No user found with this email address.'
-                        }); break;
-                    case 'auth/wrong-password':
-                        setError('password', {
-                            type: 'authentication',
-                            message: 'Wrong Password!'
-                        }); break;
-                    case 'auth/too-many-requests':
-                        setError('password', {
-                            type: 'authentication',
-                            message: 'You entered wrong password several times. Try later.'
-                        }); break;
-                    default:
+
+        fetch(`http://localhost:1234/is-deleted/${email}`)
+            .then(res => res.json())
+            .then(({ isDeleted }) => {
+                if (isDeleted) {
+                    setError('email', {
+                        type: 'allowance',
+                        message: 'Blocked user!'
+                    })
+                    setLogging(false);
                 }
-                setLogging(false);
+                else {
+                    login(email, password)
+                        .then(({ user: { email } }) => {
+                            axios.get(`http://localhost:1234/jwt?email=${email}`)
+                                .then(({ data: { token } }) => localStorage.setItem('wisdorage-token', token))
+                                .catch(err => console.error(err))
+                                .finally(() => setLogging(false))
+                        })
+                        .catch(err => {
+                            switch (err.code) {
+                                case 'auth/user-not-found':
+                                    setError('email', {
+                                        type: 'authentication',
+                                        message: 'No user found with this email address.'
+                                    }); break;
+                                case 'auth/wrong-password':
+                                    setError('password', {
+                                        type: 'authentication',
+                                        message: 'Wrong Password!'
+                                    }); break;
+                                case 'auth/too-many-requests':
+                                    setError('password', {
+                                        type: 'authentication',
+                                        message: 'You entered wrong password several times. Try later.'
+                                    }); break;
+                                default:
+                            }
+                            setLogging(false);
+                        })
+                }
             })
+            .catch(err => console.error(err))
     }
 
     return (

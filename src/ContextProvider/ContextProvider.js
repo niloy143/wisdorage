@@ -12,8 +12,18 @@ const ContextProvider = ({ children }) => {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, user => {
-            setUser(user);
-            setUserLoading(false);
+            fetch(`http://localhost:1234/is-deleted/${user?.email}`)
+                .then(res => res.json())
+                .then(({ isDeleted }) => {
+                    if (isDeleted) {
+                        signOut(auth).then(() => localStorage.removeItem('wisdorage-token'));
+                    }
+                    else {
+                        setUser(user);
+                    }
+                })
+                .catch(err => console.error(err))
+                .finally(() => setUserLoading(false))
         })
 
         return () => unsubscribe();
