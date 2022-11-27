@@ -57,16 +57,16 @@ const MyBooks = () => {
                             </thead>
                             <tbody>
                                 {
-                                    books.map(({ _id, title, picture, advertised, available }, i) => <tr key={_id}>
+                                    books.map(({ _id, title, picture, resalePrice, location, advertised, available }, i) => <tr key={_id}>
                                         <th>{i + 1}</th>
                                         <td>
                                             <img className='w-12' src={picture} alt={title} />
                                         </td>
                                         <td>{title}</td>
-                                        <td>{available ? 'Available' : 'Sold'}</td>
+                                        <td>{available ? 'Available' : <i>Unavailable</i>}</td>
                                         <td>
                                             <label htmlFor='edit-modal' className='btn btn-sm mr-1' onClick={() => setEditModal({
-                                                title,
+                                                _id, title, resalePrice, location, available, email: user?.email, refetch,
                                                 close: setEditModal
                                             })}>Edit</label>
                                         </td>
@@ -96,17 +96,65 @@ const MyBooks = () => {
     );
 };
 
-const EditModal = ({ data: { title, close } }) => {
-    console.log(title)
+const EditModal = ({ data: { _id, title, close, resalePrice, location, available, email, refetch } }) => {
+    const [status, setStatus] = useState(available);
+    const [saving, setSaving] = useState(false);
+
+    const handleSave = e => {
+        e.preventDefault();
+        setSaving(true);
+        const modifications = {
+            _id,
+            resalePrice: parseInt(e.target.resalePrice.value),
+            location: e.target.location.value,
+            available: status
+        }
+
+        fetch(`http://localhost:1234/edit/book/${_id}?email=${email}`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json',
+                authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`
+            },
+            body: JSON.stringify(modifications)
+        })
+            .then(res => res.json())
+            .then(({ modifiedCount }) => {
+                if (modifiedCount > 0) {
+                    toast.success('Saved Successfully');
+                    refetch();
+                    close(null);
+                }
+                else {
+                    toast.error('Something went wrong!')
+                }
+            })
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => setSaving(false))
+    }
+
     return (
         <>
             <input type="checkbox" id="edit-modal" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative">
-                    <label htmlFor="edit-modal" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-                    <h3 className="text-lg font-bold">Congratulations random Internet user!</h3>
-                    <p className="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for free!</p>
-                    <button onClick={() => close(null)}>Close</button>
+                    <button className="btn btn-sm btn-circle absolute right-2 top-2" onClick={() => close(null)}>✕</button>
+                    <h2 className='text-3xl font-semibold text-center my-5'>{title}</h2>
+                    <form className='w-full flex flex-col' onSubmit={handleSave}>
+                        <label className='label font-semibold text-lg mt-4'>Resale Price: </label>
+                        <input className='input input-bordered' name="resalePrice" type="number" placeholder='Resale price' defaultValue={resalePrice} required />
+                        <label className='label font-semibold text-lg mt-4'>Location: </label>
+                        <input className='input input-bordered' name="location" type="text" placeholder='Resale price' defaultValue={location} required />
+                        <label className='label font-semibold text-lg mt-4'>Status: </label>
+                        <div className='flex items-center text-lg gap-3'>
+                            <span>Unavailable</span>
+                            <input type="checkbox" className="toggle" defaultChecked={status} onChange={() => setStatus(!status)} />
+                            <span>Available</span>
+                        </div>
+                        <div className='flex justify-end mt-12'>
+                            <button className='btn btn-success text-white btn-wide' type='submit' disabled={saving}>{saving ? <Loader /> : 'Save'}</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </>
