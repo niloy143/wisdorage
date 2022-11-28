@@ -6,7 +6,7 @@ const ConfirmModal = ({ data, modalId }) => {
             < input type="checkbox" id={modalId} className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative">
-                    <label htmlFor={modalId} className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                    <button className="btn btn-sm btn-circle absolute right-2 top-2" onClick={() => data.setData(null)}>✕</button>
                     <h3 className="text-lg font-bold">Your Confirmation</h3>
                     <p className="py-4">{data.message || 'Make sure you are aware of what you are doing.'}</p>
                     <div className='flex justify-end'>

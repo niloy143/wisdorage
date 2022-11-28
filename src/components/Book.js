@@ -10,11 +10,12 @@ import ConfirmModal from './ConfirmModal';
 
 const Book = ({ book: { _id, picture, title, writer, location, resalePrice, originalPrice, yearsOfUse, postedIn, seller, verifiedSeller, orderedBy, reportedBy }, user, refetch }) => {
     const [orderModal, setOrderModal] = useState(null);
+    const [cancelModal, setCancelModal] = useState(null);
     const [cancelling, setCancelling] = useState(false);
     const [reportModal, setReportModal] = useState(null);
     const navigate = useNavigate();
 
-    const cancelOrder = id => {
+    const cancelOrder = ({ id }) => {
         setCancelling(true);
         fetch(`https://wisdorage-server.vercel.app/order/${id}?email=${user?.email}`, {
             method: "DELETE",
@@ -102,7 +103,13 @@ const Book = ({ book: { _id, picture, title, writer, location, resalePrice, orig
                     </div>
                     <div className='flex items-center gap-1 absolute bottom-4 left-4 right-4 mt-3'>
                         {
-                            !!orderedBy ? <button className='btn btn-primary grow' disabled={orderedBy !== user?.email || cancelling} onClick={() => cancelOrder(_id)}>{orderedBy === user?.email ? cancelling ? <Loader /> : 'Cancel Order' : 'Ordered'}</button> : !user ? <button className='btn btn-primary grow' onClick={() => navigate('/login')}>Login to Order</button> :
+                            !!orderedBy ? <label htmlFor='cancel-modal' className='btn btn-primary grow' disabled={orderedBy !== user?.email || cancelling} onClick={() => setCancelModal({
+                                id: _id,
+                                setData: setCancelModal,
+                                action: cancelOrder,
+                                message: `Make sure you are aware of that your order for ${title} will be cancelled and anyone could buy this book after you cancel.`,
+                                button: {bg: 'btn-error', text: 'Cancel Order'}
+                            })}>{orderedBy === user?.email ? cancelling ? <Loader /> : 'Cancel Order' : 'Ordered'}</label> : !user ? <button className='btn btn-primary grow' onClick={() => navigate('/login')}>Login to Order</button> :
                                 < label htmlFor='order-modal' className='btn btn-primary grow' onClick={() => setOrderModal({ _id, buyer: user?.displayName, buyerEmail: user?.email, title, picture, location, resalePrice })}>Order Now</label>
                         }
                         <div className="tooltip" data-tip="Report">
@@ -124,6 +131,9 @@ const Book = ({ book: { _id, picture, title, writer, location, resalePrice, orig
             <Toaster position='bottom-left' />
             {
                 reportModal && <ConfirmModal data={reportModal} modalId="report-modal" />
+            }
+            {
+                cancelModal && <ConfirmModal data={cancelModal} modalId="cancel-modal" />
             }
         </>
     );

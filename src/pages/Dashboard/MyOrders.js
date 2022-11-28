@@ -52,7 +52,7 @@ const MyOrders = () => {
                                     <th>Book</th>
                                     <th>Title</th>
                                     <th>Price</th>
-                                    <th>Payment</th>
+                                    <th>Transaction ID</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -67,8 +67,8 @@ const MyOrders = () => {
                                         <td>{resalePrice} BDT</td>
                                         <td>
                                             {
-                                                paid ? <i>Paid</i> : <label htmlFor='payment-modal' className='btn btn-sm btn-neutral' onClick={() => setPaymentData({
-                                                    _id, setPaymentData, title, resalePrice
+                                                paid ? <span className='bg-green-500 text-white'>{paid.transactionId}</span> : <label htmlFor='payment-modal' className='btn btn-sm btn-neutral' onClick={() => setPaymentData({
+                                                    _id, setPaymentData, title, resalePrice, email: user.email, refetch
                                                 })}>Pay Now</label>
                                             }
                                         </td>
