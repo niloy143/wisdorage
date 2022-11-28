@@ -6,8 +6,10 @@ import Loader from '../../components/Loader';
 import useImage from '../../hooks/useImage';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import useTitle from '../../hooks/useTitle';
 
 const Register = () => {
+    useTitle('Register');
     const { user, userLoading, googleSignIn, createUser, updateUser, setUpdatingUser } = useContext(WisdorageContext);
     const { state } = useLocation();
     const [imgFile, setImgFile] = useState(null);

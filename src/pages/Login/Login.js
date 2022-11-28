@@ -5,8 +5,10 @@ import { WisdorageContext } from '../../ContextProvider/ContextProvider';
 import Loader from '../../components/Loader';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import useTitle from '../../hooks/useTitle';
 
 const Login = () => {
+    useTitle('Login');
     const { user, userLoading, googleSignIn, login } = useContext(WisdorageContext);
     const { state } = useLocation();
     const { register, handleSubmit, formState: { errors }, setError } = useForm();

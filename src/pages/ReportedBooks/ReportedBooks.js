@@ -1,11 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import Loader from '../../components/Loader';
 import { WisdorageContext } from '../../ContextProvider/ContextProvider';
+import useTitle from '../../hooks/useTitle';
+import ConfirmModal from '../../components/ConfirmModal';
 
 const ReportedBooks = () => {
+    useTitle('Reported Books');
     const { user } = useContext(WisdorageContext);
+    const [removeModal, setRemoveModal] = useState(null);
     const { data: books, isLoading, refetch } = useQuery({
         queryKey: ['reported-books'],
         queryFn: () => fetch(`https://wisdorage-server.vercel.app/reported-books?email=${user?.email}`, {
@@ -15,7 +19,7 @@ const ReportedBooks = () => {
         }).then(res => res.json())
     })
 
-    const removeReport = id => {
+    const removeReport = ({ id }) => {
         fetch(`https://wisdorage-server.vercel.app/remove-report/${id}?email=${user?.email}`, {
             method: "PUT",
             headers: {
@@ -62,7 +66,13 @@ const ReportedBooks = () => {
                                         <td className='grid border-0'>{
                                             reportedBy.map((user, i) => <span key={i}>{user}</span>)
                                         }</td>
-                                        <td className='border-0'><button className='btn btn-primary btn-sm' onClick={() => removeReport(_id)}>Remove</button></td>
+                                        <td className='border-0'><label htmlFor='remove-report' className='btn btn-primary btn-sm' onClick={() => setRemoveModal({
+                                            id: _id,
+                                            setData: setRemoveModal,
+                                            action: removeReport,
+                                            message: `All the reports for ${title} will be removed and those who reported, will start to see this book again.`,
+                                            button: { text: 'Remove Report' }
+                                        })}>Remove</label></td>
                                     </tr>)
                                 }
                             </tbody>
@@ -71,6 +81,9 @@ const ReportedBooks = () => {
                 </div>
             }
             <Toaster position='bottom-left' />
+            {
+                removeModal && <ConfirmModal data={removeModal} modalId={'remove-report'} />
+            }
         </>
     );
 };

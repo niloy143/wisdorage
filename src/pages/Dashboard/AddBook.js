@@ -4,8 +4,10 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../components/Loader';
 import { WisdorageContext } from '../../ContextProvider/ContextProvider';
+import useTitle from '../../hooks/useTitle';
 
 const AddBook = () => {
+    useTitle('Add Book');
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [adding, setAdding] = useState(false);
     const { user } = useContext(WisdorageContext);

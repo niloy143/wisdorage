@@ -5,8 +5,10 @@ import Loader from '../../components/Loader';
 import toast, { Toaster } from 'react-hot-toast';
 import ConfirmModal from '../../components/ConfirmModal';
 import PaymentModal from '../../components/PaymentModal';
+import useTitle from '../../hooks/useTitle';
 
 const MyOrders = () => {
+    useTitle('My Orders');
     const [modalData, setModalData] = useState(null);
     const [paymentModal, setPaymentData] = useState(null);
     const { user } = useContext(WisdorageContext);

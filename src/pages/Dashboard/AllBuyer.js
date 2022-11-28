@@ -4,8 +4,10 @@ import { WisdorageContext } from '../../ContextProvider/ContextProvider';
 import Loader from '../../components/Loader';
 import toast, { Toaster } from 'react-hot-toast';
 import ConfirmModal from '../../components/ConfirmModal';
+import useTitle from '../../hooks/useTitle';
 
 const AllBuyer = () => {
+    useTitle('All Buyer');
     const [modalData, setModalData] = useState(null);
     const { user } = useContext(WisdorageContext);
     const { data: buyers, isLoading, refetch } = useQuery({

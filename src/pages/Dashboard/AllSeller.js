@@ -5,8 +5,10 @@ import Loader from '../../components/Loader';
 import toast, { Toaster } from 'react-hot-toast';
 import { MdVerifiedUser } from 'react-icons/md';
 import ConfirmModal from '../../components/ConfirmModal';
+import useTitle from '../../hooks/useTitle';
 
 const AllSeller = () => {
+    useTitle('All Seller');
     const [modalData, setModalData] = useState(null);
     const { user } = useContext(WisdorageContext);
     const { data: sellers, isLoading, refetch } = useQuery({

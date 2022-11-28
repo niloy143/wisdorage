@@ -10,13 +10,13 @@ import AllSeller from "../pages/Dashboard/AllSeller";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import AllBuyer from "../pages/Dashboard/AllBuyer";
-import BookCategories from "../pages/Home/BookCategories";
 import BooksByCategory from "../pages/BooksByCategory/BooksByCategory";
 import MyOrders from "../pages/Dashboard/MyOrders";
 import AddBook from "../pages/Dashboard/AddBook";
 import SellerRoute from './SellerRoute';
 import MyBooks from "../pages/Dashboard/MyBooks";
 import ReportedBooks from "../pages/ReportedBooks/ReportedBooks";
+import Categories from "../pages/Categories/Categories";
 
 const routes = createBrowserRouter([
     {
@@ -33,7 +33,7 @@ const routes = createBrowserRouter([
             },
             {
                 path: '/categories',
-                element: <BookCategories />
+                element: <Categories />
             },
             {
                 path: '/books/:categoryId',

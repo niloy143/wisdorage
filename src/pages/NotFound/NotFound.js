@@ -2,8 +2,10 @@ import React from 'react';
 import NavigationBar from '../../components/NavigationBar';
 import Footer from '../../components/Footer';
 import { NavLink } from 'react-router-dom';
+import useTitle from '../../hooks/useTitle';
 
 const NotFound = () => {
+    useTitle('Page Not Found');
     return (
         <>
             <div className='max-w-7xl mx-auto'>

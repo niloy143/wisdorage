@@ -4,8 +4,10 @@ import { WisdorageContext } from '../../ContextProvider/ContextProvider';
 import Loader from '../../components/Loader';
 import toast, { Toaster } from 'react-hot-toast';
 import ConfirmModal from '../../components/ConfirmModal';
+import useTitle from '../../hooks/useTitle';
 
 const MyBooks = () => {
+    useTitle('My Books');
     const { user } = useContext(WisdorageContext);
     const [advertiseModal, setAdvertiseModal] = useState(null);
     const [editModal, setEditModal] = useState(null);
