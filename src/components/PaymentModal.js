@@ -39,7 +39,7 @@ const CheckOutForm = ({ _id, setPaymentData, resalePrice, email, refetch }) => {
     const elements = useElements();
 
     useEffect(() => {
-        fetch(`http://localhost:1234/create-payment-intent?email=${email}`, {
+        fetch(`https://wisdorage-server.vercel.app/create-payment-intent?email=${email}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -98,7 +98,7 @@ const CheckOutForm = ({ _id, setPaymentData, resalePrice, email, refetch }) => {
             else {
                 setError('');
                 if (paymentIntent.status === "succeeded") {
-                    fetch(`http://localhost:1234/order/${_id}?email=${email}`, {
+                    fetch(`https://wisdorage-server.vercel.app/order/${_id}?email=${email}`, {
                         method: "PUT",
                         headers: {
                             authorization: `Bearer ${localStorage.getItem('wisdorage-token')}`,
