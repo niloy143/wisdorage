@@ -62,53 +62,43 @@ const Book = ({ book: { _id, picture, title, writer, location, resalePrice, orig
     return (
         <>
             <div className="relative pb-16 p-3 border rounded-xl shadow-lg m-1">
-                <div className="flex flex-col gap-3">
-                    <div className='flex flex-col items-center text-center gap-5'>
-                        <img className='w-full h-full' src={picture} alt={title} />
+                <div className="flex items-start gap-3">
+                    <img className='w-36 h-52 rounded' src={picture} alt={title} />
+                    <div className='flex flex-col text-sm sm:text-base'>
                         <div>
-                            <h2 className='font-semibold text-3xl'>{title}</h2>
-                            <h4> {writer} </h4>
+                            <h2 className='font-semibold'>{title}</h2>
+                            <h4> <small>by {writer}</small> </h4>
                         </div>
-                    </div>
-                    <div className='px-5 flex flex-col'>
-                        <div className='py-8 flex flex-col gap-3'>
-                            <div className='flex gap-3 justify-between'>
-                                <h3 className='font-semibold w-full'>Seller:</h3>
-                                <p className='w-full text-end flex items-center justify-end gap-1 text-lg font-semibold'>
-                                    <span>{seller}</span>
-                                    <span>{<span className="tooltip flex items-center" data-tip={`${!!verifiedSeller ? "Verified Seller" : "Not Verified"}`}><MdVerifiedUser className={!!verifiedSeller ? 'text-blue-600' : 'text-gray-400'} /></span>}</span>
-                                </p>
-                            </div>
-                            <div className='flex gap-3 justify-between'>
-                                <h3 className='font-semibold w-full'>Posted:</h3>
-                                <p className='w-full text-end'>{formatDistanceToNowStrict(postedIn)} ago</p>
-                            </div>
-                            <div className='flex gap-3 justify-between'>
-                                <h3 className='font-semibold w-full'>Resale Price:</h3>
-                                <p className='w-full text-end'>{resalePrice} BDT</p>
-                            </div>
-                            <div className='flex gap-3 justify-between'>
-                                <h3 className='font-semibold w-full'>Original Price:</h3>
-                                <p className='w-full text-end'>{originalPrice} BDT</p>
-                            </div>
-                            <div className='flex gap-3 justify-between'>
-                                <h3 className='font-semibold w-full'>Year(s) of Usage:</h3>
-                                <p className='w-full text-end'>{yearsOfUse > 0 && yearsOfUse} {`${yearsOfUse === 1 ? 'Year' : yearsOfUse > 1 ? 'Years' : 'Less than a year'}`}</p>
-                            </div>
-                            <div className='flex gap-3 justify-between'>
-                                <h3 className='font-semibold w-full'>Where to get from:</h3>
-                                <p className='w-full text-end'>{location}</p>
-                            </div>
+                        <div className='flex items-center gap-2'>
+                            <h3>Seller:</h3>
+                            <p className='w-full flex items-center gap-1 font-semibold'>
+                                <span>{seller}</span>
+                                <span>{<span className="tooltip flex items-center" data-tip={`${!!verifiedSeller ? "Verified Seller" : "Not Verified"}`}><MdVerifiedUser className={!!verifiedSeller ? 'text-blue-600' : 'text-gray-400'} /></span>}</span>
+                            </p>
                         </div>
+                        <div className='flex gap-3 justify-between'>
+                            <h3 className='font-semibold'>Resale:</h3>
+                            <p>{resalePrice} BDT</p>
+                        </div>
+                        <div className='flex gap-3 justify-between'>
+                            <h3 className='font-semibold'>Regular:</h3>
+                            <p>{originalPrice} BDT</p>
+                        </div>
+                        <div className='flex gap-3 justify-between'>
+                            <h3 className='font-semibold'>Usage:</h3>
+                            <p>{yearsOfUse > 0 && yearsOfUse} {`${yearsOfUse === 1 ? 'Year' : yearsOfUse > 1 ? 'Years' : 'Less than a year'}`}</p>
+                        </div>
+                        <p>{location}</p>
+                        <small className='text-end pt-3'>{formatDistanceToNowStrict(postedIn)} ago</small>
                     </div>
-                    <div className='flex items-center gap-1 absolute bottom-4 left-4 right-4 mt-3'>
+                    <div className='flex items-center gap-1 absolute bottom-2 left-3 right-3 mt-2'>
                         {
                             !!orderedBy ? <label htmlFor='cancel-modal' className='btn btn-primary grow' disabled={orderedBy !== user?.email || cancelling} onClick={() => setCancelModal({
                                 id: _id,
                                 setData: setCancelModal,
                                 action: cancelOrder,
                                 message: `Make sure you are aware of that your order for ${title} will be cancelled and anyone could buy this book after you cancel.`,
-                                button: {bg: 'btn-error', text: 'Cancel Order'}
+                                button: { bg: 'btn-error', text: 'Cancel Order' }
                             })}>{orderedBy === user?.email ? cancelling ? <Loader /> : 'Cancel Order' : 'Ordered'}</label> : !user ? <button className='btn btn-primary grow' onClick={() => navigate('/login')}>Login to Order</button> :
                                 < label htmlFor='order-modal' className='btn btn-primary grow' onClick={() => setOrderModal({ _id, buyer: user?.displayName, buyerEmail: user?.email, title, picture, location, resalePrice })}>Order Now</label>
                         }

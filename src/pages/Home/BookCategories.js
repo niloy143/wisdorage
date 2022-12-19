@@ -15,9 +15,9 @@ const BookCategories = () => {
         isLoading ? <Loader section /> : !(data?.data?.length) ? <></> :
             <div className='my-24'>
                 <h2 className='text-3xl sm:text-4xl my-12 text-center font-bold'>Select a Category</h2>
-                <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 px-3 my-12`}>
+                <div className={`flex justify-center flex-wrap gap-5 px-3 my-12`}>
                     {
-                        data.data.map(({ categoryId, name, des, bgImg }) => <div className="card max-w-xs mx-auto bg-base-100 shadow-xl image-full" key={categoryId}>
+                        data.data.map(({ categoryId, name, des, bgImg }) => <div className="card max-w-xs bg-base-100 shadow-xl image-full" key={categoryId}>
                             <figure><img src={bgImg} alt={name} /></figure>
                             <div className="card-body">
                                 <h2 className="card-title text-white text-2xl">{name}</h2>

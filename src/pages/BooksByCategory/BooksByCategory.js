@@ -24,8 +24,8 @@ const BooksByCategory = () => {
     return (
         isLoading ? <Loader body /> : !books?.length ? <div className='h-[80vh] flex items-center justify-center text-3xl text-gray-400 font-semibold'> Nothing to show!</div> :
             <div className='my-12'>
-                <h2 className='text-3xl sm:text-5xl px-5 font-bold mb-5'>{category}</h2>
-                <div className='mx-3 grid sm:grid-cols-2 xl:grid-cols-3 gap-5'>
+                <h2 className='text-3xl sm:text-5xl px-5 font-bold mb-5 text-center py-12'>{category}</h2>
+                <div className='mx-3 flex justify-center flex-wrap gap-5'>
                     {
                         books.filter(({ available, reportedBy }) => !!available && (!reportedBy || !(reportedBy.includes(user?.email)))).map(book => <Book key={book._id} book={book} user={user} refetch={refetch} />)
                     }
