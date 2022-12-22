@@ -4,6 +4,7 @@ import Banner from './Banner';
 import BookCategories from './BookCategories';
 import WhyWisdorage from './WhyWisdorage';
 import useTitle from '../../hooks/useTitle';
+import TopSellers from './TopSellers';
 
 const Home = () => {
     useTitle('', 'Wisdorage')
@@ -12,6 +13,7 @@ const Home = () => {
             <Banner />
             <AdvertisedBooks />
             <BookCategories />
+            <TopSellers />
             <WhyWisdorage />
         </div>
     );

@@ -23,7 +23,7 @@ const BooksByCategory = () => {
 
     return (
         isLoading ? <Loader body /> : !books?.length ? <div className='h-[80vh] flex items-center justify-center text-3xl text-gray-400 font-semibold'> Nothing to show!</div> :
-            <div className='my-12'>
+            <div className='min-h-[80vh] flex justify-center flex-col my-12'>
                 <h2 className='text-3xl sm:text-5xl px-5 font-bold mb-5 text-center py-12'>{category}</h2>
                 <div className='mx-3 flex justify-center flex-wrap gap-5'>
                     {
