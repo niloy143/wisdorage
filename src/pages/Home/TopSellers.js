@@ -5,7 +5,7 @@ const TopSellers = () => {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        fetch(`http://localhost:1234/users?role=seller`)
+        fetch(`https://wisdorage-server.vercel.app/users?role=seller`)
             .then(res => res.json())
             .then(data => setUsers(data))
     }, [])
@@ -22,7 +22,7 @@ const TopSellers = () => {
     );
 };
 
-const Seller = ({ seller: { seller: { displayName, email, photoURL }, i } }) => {
+const Seller = ({ seller: { seller: { displayName, photoURL }, i } }) => {
     const [img, setImg] = useState('');
     useValidImg(photoURL, setImg);
 
